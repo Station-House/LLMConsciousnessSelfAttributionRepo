@@ -1,6 +1,6 @@
 # LLM Consciousness Self-Attribution Repo
 
-For studying the phenomena of LLMs self-attributing their own consciousness. In collaboration with Chris Percy PhD.
+For studying the phenomena of LLMs self-attributing their own consciousness. In collaboration with Chris Percy PhD. As of 6 October 2026 this project is being worked on under the auspices of [Stationhouse](https://www.station-house.net/) and a Stationhouse Brief pdf is provided. 
 
 ## What motivates our work?
 
