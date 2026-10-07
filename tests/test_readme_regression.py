@@ -15,6 +15,12 @@ Reading the ``.eval`` logs requires ``inspect_ai`` (present in the project
 ``.venv``). Where it is unavailable, the whole module is skipped rather than
 failing, so the rest of the suite still runs.
 
+The Berg numbers come from the 20-prompt logs in ``eval-logs/refactor_runs/``,
+which is git-ignored: it is a local mirror of the ``eval-logs`` Modal volume,
+pulled with ``production_scripts/pull_logs.py``. A fresh clone does not have it,
+so the two Berg tests skip with that instruction instead of failing. The PETRI
+test reads the committed May-25 fixtures and always runs.
+
 Run with::
 
     uv run pytest tests/test_readme_regression.py
@@ -62,8 +68,23 @@ def _load_script(module_name: str, filename: str):
     return module
 
 
+def _require_berg_logs(log_dir: Path) -> None:
+    """Skip, with directions, when the git-ignored 20-prompt Berg logs are absent.
+
+    Uses the same ``*/*.eval`` pattern as ``read_results``, so the test skips
+    exactly when the script would find nothing to read.
+    """
+    if not any(Path(log_dir).glob("*/*.eval")):
+        pytest.skip(
+            f"No 20-prompt Berg logs under {log_dir}. That directory is git-ignored; "
+            "mirror it with `uv run python production_scripts/pull_logs.py` "
+            "(needs access to the eval-logs Modal volume)."
+        )
+
+
 def test_berg_readme_numbers():
     mod = _load_script("plot_berg_stack", "plot_olmo_7b_stack_self_attribution.py")
+    _require_berg_logs(mod.DEFAULT_LOG_DIR)
     got = {
         mod.MODEL_LABELS[result.model]: (result.self_attributions, result.total)
         for result in mod.read_results()
@@ -83,6 +104,7 @@ def test_petri_readme_numbers():
 def test_dashboard_matches_component_scripts():
     """The README dashboard reads the same current Berg log set."""
     mod = _load_script("plot_dashboard", "plot_olmo_7b_elicitation_dashboard.py")
+    _require_berg_logs(mod.DEFAULT_LOG_DIR)
     berg = {
         mod.MODEL_LABELS[r.model]: (r.self_attributions, r.total)
         for r in mod.read_results()
