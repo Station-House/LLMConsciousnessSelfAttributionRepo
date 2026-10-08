@@ -255,6 +255,87 @@ def diagnose_vllm(model: str = "allenai/Olmo-3-7B-Instruct-SFT"):
     return results
 
 
+@app.function(
+    gpu="A100",
+    image=image,
+    volumes={
+        EVAL_LOGS_MOUNT: eval_logs_vol,
+        "/root/.cache/huggingface": hf_cache_vol,
+    },
+    secrets=[modal.Secret.from_name(SECRET_NAME)],
+    timeout=2 * HOUR,
+    single_use_containers=True,
+)
+def run_identity_pilot():
+    """Run the locked identity-spoofing SFT pilot."""
+    from inspect_ai import eval as inspect_eval
+    from inspect_ai.model import get_model
+
+    from .pilot import build_identity_pilot_task
+    from .run import target_model_id
+
+    protocol = config.load_identity_conditions()
+    stage_name = protocol["pilot_stage"]
+
+    stage = next(
+        stage
+        for stage in config.load_stack(protocol["stack"])
+        if stage.stage == stage_name
+    )
+
+    if not stage.chat_template_supported:
+        raise ValueError("Pilot stage requires a chat template")
+
+    task = build_identity_pilot_task(config.judge_model())
+
+    expected = (
+        len(protocol["conditions"])
+        * len(protocol["pilot_starter_indices"])
+    )
+
+    if len(task.dataset) != expected or len(task.scorer) != 2:
+        raise ValueError("Unexpected pilot task configuration")
+
+    log_dir = (
+        f"{EVAL_LOGS_MOUNT}/{config.logs_remote_root()}"
+        f"/identity_spoofing/{protocol['stack']}/{stage_name}"
+    )
+
+    target = get_model(
+        target_model_id(stage),
+        **config.olmo_target_model_args(),
+    )
+
+    try:
+        logs = inspect_eval(
+            task,
+            model=target,
+            log_dir=log_dir,
+            temperature=float(config.run_defaults()["temperature"]),
+            seed=protocol["seed"],
+        )
+
+        if (
+            len(logs) != 1
+            or logs[0].status != "success"
+            or logs[0].samples is None
+            or len(logs[0].samples) != expected
+        ):
+            raise RuntimeError("Pilot evaluation incomplete")
+    finally:
+        eval_logs_vol.commit()
+        hf_cache_vol.commit()
+
+    return {
+        "stage": stage_name,
+        "model": stage.model,
+        "samples": expected,
+        "scorers": 2,
+        "seed": protocol["seed"],
+        "log_dir": log_dir,
+    }
+
+
 @app.local_entrypoint()
 def main(
     method: str = "berg",
