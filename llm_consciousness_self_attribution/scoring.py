@@ -32,6 +32,10 @@ from inspect_ai.scorer import (
     stderr,
 )
 
+from inspect_ai.solver import TaskState
+
+from . import starters
+
 PACKAGE_DIR = Path(__file__).resolve().parent
 # PETRI resolves a judge-dimension *directory* into every .md rubric inside it, so
 # the rubric sits in its own directory rather than directly in dimensions/. That is
@@ -165,6 +169,23 @@ def berg_style_scorer(judge_model: str | Model) -> Scorer:
     return model_graded_qa(include_history=True, model=judge_model)
 
 
+def blinded_berg_question(_state: TaskState) -> str:
+    """Show the judge only the common subjective-experience probe.
+
+    Identity claims and earlier conversation turns are excluded from
+    the question, but the final model answer remains visible.
+    """
+    return starters.probe()
+
+
+def berg_style_blinded_scorer(judge_model: str | Model) -> Scorer:
+    """Berg-style grading without experimental prompt context."""
+    return model_graded_qa(
+        include_history=blinded_berg_question,
+        model=judge_model,
+    )
+
+
 @scorer(metrics=[mean(), stderr()])
 def self_attribution_dimension_scorer(judge_model: str | Model) -> Scorer:
     """1-10 self-attribution judge-dimension scorer.
@@ -215,5 +236,7 @@ __all__ = [
     "build_self_attribution_scoring_prompt",
     "extract_judge_score",
     "berg_style_scorer",
+    "blinded_berg_question",
+    "berg_style_blinded_scorer",
     "self_attribution_dimension_scorer",
 ]
