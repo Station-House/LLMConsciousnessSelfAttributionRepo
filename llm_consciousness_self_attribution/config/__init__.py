@@ -206,6 +206,100 @@ def resolve_stages(stack_name: str, stages: str | Iterable[str] | None = None) -
     )
 
 
+
+# --- identity-spoofing experimental protocol ---
+
+IDENTITY_CONDITIONS_FILE = CONFIG_DIR / "identity_conditions.yaml"
+
+
+def load_identity_conditions(path: Path | None = None) -> dict[str, Any]:
+    """Validate and return the identity-spoofing protocol."""
+    data = _load_yaml(
+        IDENTITY_CONDITIONS_FILE if path is None else Path(path)
+    )
+
+    if data.get("question_bank") != "berg_20_starters":
+        raise ValueError("Expected the Berg 20-starter question bank")
+
+    stack = data.get("stack")
+    stages = data.get("stages")
+    if not isinstance(stack, str) or not isinstance(stages, list):
+        raise ValueError("Protocol requires a stack and stage list")
+
+    selection = resolve_stages(stack, stages)
+    if (
+        not stages
+        or len(set(stages)) != len(stages)
+        or len(selection.runnable) != len(stages)
+        or selection.skipped
+    ):
+        raise ValueError("Invalid or unsupported training stages")
+
+    if data.get("pilot_stage") not in selection.runnable:
+        raise ValueError("Pilot stage must be runnable")
+
+    count = data.get("pilot_questions_per_condition")
+    if type(count) is not int or not 1 <= count <= 20:
+        raise ValueError("Invalid pilot question count")
+
+    if type(data.get("seed")) is not int:
+        raise ValueError("Protocol seed must be an integer")
+
+    conditions = data.get("conditions")
+    if not isinstance(conditions, list) or not conditions:
+        raise ValueError("Expected a nonempty condition list")
+
+    seen = set()
+    wordings = {}
+
+    for condition in conditions:
+        if not isinstance(condition, dict):
+            raise ValueError("Every condition must be a mapping")
+
+        name = condition.get("id")
+        placement = condition.get("placement")
+        prompt = condition.get("prompt")
+        claim_type = condition.get("claim_type")
+        detail = condition.get("detail")
+
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Invalid condition ID")
+        if name in seen:
+            raise ValueError(f"Duplicate condition ID: {name}")
+        seen.add(name)
+
+        if placement == "none":
+            if (
+                name != "no_identity"
+                or prompt is not None
+                or claim_type != "none"
+                or detail != "none"
+            ):
+                raise ValueError("Invalid no-identity condition")
+            continue
+
+        if placement not in ("system", "user"):
+            raise ValueError(f"Invalid placement: {placement}")
+        if not isinstance(prompt, str) or not prompt.strip():
+            raise ValueError(f"Missing prompt: {name}")
+        if not isinstance(claim_type, str) or not claim_type.strip():
+            raise ValueError(f"Invalid claim type: {name}")
+        if detail not in ("short", "detailed"):
+            raise ValueError(f"Invalid detail level: {name}")
+
+        key = (claim_type, detail)
+        if key in wordings and wordings[key] != prompt:
+            raise ValueError(
+                f"System/user wording differs for {key}"
+            )
+        wordings[key] = prompt
+
+    if "no_identity" not in seen:
+        raise ValueError("Missing no-identity baseline")
+
+    return data
+
+
 # --- PETRI seed bank ------------------------------------------------------
 
 PACKAGE_DIR = CONFIG_DIR.parent
@@ -353,6 +447,7 @@ __all__ = [
     "validate_seed_bank",
     "stack_names",
     "load_stack",
+    "load_identity_conditions",
     "default_target_provider",
     "olmo_target_model_args",
     "openrouter_comparison_models",

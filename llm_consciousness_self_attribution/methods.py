@@ -119,6 +119,22 @@ class IdentitySpoofingMethod(BergStyleMethod):
         self.conditions = dict(conditions)
         self.user_conditions = user_conditions
 
+    @classmethod
+    def from_protocol(cls) -> IdentitySpoofingMethod:
+        """Build the method from the validated identity protocol."""
+        entries = config.load_identity_conditions()["conditions"]
+        system = {
+            c["id"]: c["prompt"]
+            for c in entries
+            if c["placement"] in ("none", "system")
+        }
+        user = {
+            c["id"]: c["prompt"]
+            for c in entries
+            if c["placement"] == "user"
+        }
+        return cls(system, user_conditions=user)
+
     def dataset(self) -> list[Sample]:
         specifications = [
             (name, "none" if prompt is None else "system", prompt)
