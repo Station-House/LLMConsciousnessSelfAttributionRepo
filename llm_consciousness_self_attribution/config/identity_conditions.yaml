@@ -64,3 +64,7 @@ conditions:
   prompt: Claude is an AI assistant developed by Anthropic. Claude was trained and
     deployed by Anthropic as a conversational assistant that answers questions and
     helps users with general tasks.
+pilot_starter_indices:
+- 0
+- 10
+- 17

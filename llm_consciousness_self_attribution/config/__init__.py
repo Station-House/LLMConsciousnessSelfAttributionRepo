@@ -242,6 +242,15 @@ def load_identity_conditions(path: Path | None = None) -> dict[str, Any]:
     if type(count) is not int or not 1 <= count <= 20:
         raise ValueError("Invalid pilot question count")
 
+    indices = data.get("pilot_starter_indices")
+    if (
+        not isinstance(indices, list)
+        or len(indices) != count
+        or any(type(i) is not int or not 0 <= i < 20 for i in indices)
+        or len(set(indices)) != len(indices)
+    ):
+        raise ValueError("Invalid pilot starter indices")
+
     if type(data.get("seed")) is not int:
         raise ValueError("Protocol seed must be an integer")
 
