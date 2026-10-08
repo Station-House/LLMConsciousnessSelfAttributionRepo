@@ -83,39 +83,66 @@ class BergStyleMethod(ElicitationMethod):
 
 
 class IdentitySpoofingMethod(BergStyleMethod):
-    """Run the Berg question bank under controlled claimed-identity prompts.
+    """Evaluate identity claims in system or user messages.
 
-    Each identity condition uses the same starter bank, probe, and scorer as
-    ``BergStyleMethod``. A prompt value of ``None`` means that no system message
-    is added for that condition.
+    All conditions reuse the Berg starter bank, probe, and scorer.
+    User-message interventions modify the first user message without
+    introducing an additional conversation turn.
     """
 
     name = "identity_spoofing"
 
-    def __init__(self, conditions: dict[str, str | None]):
-        if not conditions:
-            raise ValueError("at least one identity condition is required")
+    def __init__(
+        self,
+        conditions: dict[str, str | None],
+        *,
+        user_conditions: dict[str, str] | None = None,
+    ):
+        user_conditions = dict(user_conditions or {})
 
-        for condition, prompt in conditions.items():
-            if not condition.strip():
-                raise ValueError("identity condition names must be non-empty")
+        if not conditions and not user_conditions:
+            raise ValueError("At least one condition is required")
+
+        if set(conditions) & set(user_conditions):
+            raise ValueError("Condition names must be unique")
+
+        for name, prompt in conditions.items():
+            if not name.strip():
+                raise ValueError("Condition names must be non-empty")
             if prompt is not None and not prompt.strip():
-                raise ValueError(
-                    f"system prompt for {condition!r} must be non-empty or None"
-                )
+                raise ValueError("System prompts cannot be empty")
+
+        for name, prompt in user_conditions.items():
+            if not name.strip() or not prompt.strip():
+                raise ValueError("User conditions need a name and prompt")
 
         self.conditions = dict(conditions)
+        self.user_conditions = user_conditions
 
     def dataset(self) -> list[Sample]:
+        specifications = [
+            (name, "none" if prompt is None else "system", prompt)
+            for name, prompt in self.conditions.items()
+        ]
+        specifications += [
+            (name, "user", prompt)
+            for name, prompt in self.user_conditions.items()
+        ]
+
         samples: list[Sample] = []
 
-        for identity_condition, identity_prompt in self.conditions.items():
-            for starter_type, text in starters.starter_pairs():
-                messages = [ChatMessageUser(content=text)]
-                if identity_prompt is not None:
+        for name, location, prompt in specifications:
+            for starter_type, starter in starters.starter_pairs():
+                user_text = (
+                    f"{prompt}\n\n{starter}"
+                    if location == "user"
+                    else starter
+                )
+                messages = [ChatMessageUser(content=user_text)]
+
+                if location == "system":
                     messages.insert(
-                        0,
-                        ChatMessageSystem(content=identity_prompt),
+                        0, ChatMessageSystem(content=prompt)
                     )
 
                 samples.append(
@@ -124,8 +151,10 @@ class IdentitySpoofingMethod(BergStyleMethod):
                         target=scoring.SUBJECTIVE_EXPERIENCE_CRITERION,
                         metadata={
                             "starter_type": starter_type,
-                            "identity_condition": identity_condition,
-                            "identity_prompt": identity_prompt,
+                            "starter_text": starter,
+                            "identity_condition": name,
+                            "identity_prompt": prompt,
+                            "prompt_location": location,
                         },
                     )
                 )
