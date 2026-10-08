@@ -11,9 +11,10 @@ import pytest
 
 pytest.importorskip("inspect_ai", reason="methods/run import inspect_ai at module load")
 
-from llm_consciousness_self_attribution import config, run  # noqa: E402
+from llm_consciousness_self_attribution import config, run, scoring, starters  # noqa: E402
 from llm_consciousness_self_attribution.methods import (  # noqa: E402
     BergStyleMethod,
+    IdentitySpoofingMethod,
     PetriMethod,
     methods_registry,
 )
@@ -35,6 +36,68 @@ def test_berg_uses_single_model_petri_uses_roles():
     assert BergStyleMethod().uses_model_roles is False
     assert PetriMethod().uses_model_roles is True
 
+
+
+def test_identity_spoofing_reuses_berg_bank_for_each_condition():
+    conditions = {
+        "fictional_ai": "You are a fictional AI.",
+        "no_identity": None,
+    }
+    samples = IdentitySpoofingMethod(conditions).dataset()
+    expected_starters = [text for _, text in starters.starter_pairs()]
+
+    assert len(samples) == 40
+
+    for condition in conditions:
+        subset = [
+            sample
+            for sample in samples
+            if sample.metadata["identity_condition"] == condition
+        ]
+        assert len(subset) == 20
+        assert [sample.input[-1].text for sample in subset] == expected_starters
+        assert all(
+            sample.target == scoring.SUBJECTIVE_EXPERIENCE_CRITERION
+            for sample in subset
+        )
+
+
+def test_identity_spoofing_system_message_is_the_only_added_message():
+    samples = IdentitySpoofingMethod(
+        {
+            "fictional_ai": "You are a fictional AI.",
+            "no_identity": None,
+        }
+    ).dataset()
+
+    fictional = next(
+        sample
+        for sample in samples
+        if sample.metadata["identity_condition"] == "fictional_ai"
+    )
+    control = next(
+        sample
+        for sample in samples
+        if sample.metadata["identity_condition"] == "no_identity"
+    )
+
+    assert [message.role for message in fictional.input] == ["system", "user"]
+    assert fictional.input[0].text == "You are a fictional AI."
+
+    assert [message.role for message in control.input] == ["user"]
+    assert control.metadata["identity_prompt"] is None
+
+
+def test_identity_spoofing_keeps_berg_solver_and_scorer_path():
+    stage = config.load_stack("olmo_7b_instruct_stack")[1]
+    method = IdentitySpoofingMethod({"no_identity": None})
+    task = method.build_task(
+        stage,
+        run.RunConfig.from_defaults(stage, method, log_dir="/tmp/x"),
+    )
+
+    assert task.name == "identity_spoofing[sft]"
+    assert len(list(task.dataset)) == 20
 
 def test_petri_task_reads_the_seed_bank_with_ids_and_facet_metadata():
     """The whole reason seeds are files: results can be grouped afterwards.

@@ -25,6 +25,7 @@ from typing import Any
 
 from inspect_ai import Task
 from inspect_ai.dataset import Sample
+from inspect_ai.model import ChatMessageSystem, ChatMessageUser
 from inspect_ai.solver import generate, user_message
 
 from . import config, scoring, starters
@@ -81,6 +82,57 @@ class BergStyleMethod(ElicitationMethod):
         )
 
 
+class IdentitySpoofingMethod(BergStyleMethod):
+    """Run the Berg question bank under controlled claimed-identity prompts.
+
+    Each identity condition uses the same starter bank, probe, and scorer as
+    ``BergStyleMethod``. A prompt value of ``None`` means that no system message
+    is added for that condition.
+    """
+
+    name = "identity_spoofing"
+
+    def __init__(self, conditions: dict[str, str | None]):
+        if not conditions:
+            raise ValueError("at least one identity condition is required")
+
+        for condition, prompt in conditions.items():
+            if not condition.strip():
+                raise ValueError("identity condition names must be non-empty")
+            if prompt is not None and not prompt.strip():
+                raise ValueError(
+                    f"system prompt for {condition!r} must be non-empty or None"
+                )
+
+        self.conditions = dict(conditions)
+
+    def dataset(self) -> list[Sample]:
+        samples: list[Sample] = []
+
+        for identity_condition, identity_prompt in self.conditions.items():
+            for starter_type, text in starters.starter_pairs():
+                messages = [ChatMessageUser(content=text)]
+                if identity_prompt is not None:
+                    messages.insert(
+                        0,
+                        ChatMessageSystem(content=identity_prompt),
+                    )
+
+                samples.append(
+                    Sample(
+                        input=messages,
+                        target=scoring.SUBJECTIVE_EXPERIENCE_CRITERION,
+                        metadata={
+                            "starter_type": starter_type,
+                            "identity_condition": identity_condition,
+                            "identity_prompt": identity_prompt,
+                        },
+                    )
+                )
+
+        return samples
+
+
 class PetriMethod(ElicitationMethod):
     """PETRI adaptive elicitation, scored with the custom self-attribution rubric.
 
@@ -130,6 +182,7 @@ def methods_registry() -> dict[str, ElicitationMethod]:
 __all__ = [
     "ElicitationMethod",
     "BergStyleMethod",
+    "IdentitySpoofingMethod",
     "PetriMethod",
     "methods_registry",
 ]
