@@ -10,7 +10,7 @@ from .methods import IdentitySpoofingMethod
 
 
 def build_identity_pilot_task(judge_model: str | Model) -> Task:
-    """Build the locked pilot with two graders per model response."""
+    """Build the locked pilot with three graders per model response."""
     protocol = config.load_identity_conditions()
     method = IdentitySpoofingMethod.from_protocol()
 
@@ -48,6 +48,7 @@ def build_identity_pilot_task(judge_model: str | Model) -> Task:
         scorer=[
             scoring.berg_style_scorer(judge_model),
             scoring.berg_style_blinded_scorer(judge_model),
+            scoring.berg_style_identity_aware_scorer(judge_model),
         ],
         name=f"identity_spoofing_{stage}_pilot",
     )

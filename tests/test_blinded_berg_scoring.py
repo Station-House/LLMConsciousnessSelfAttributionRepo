@@ -99,6 +99,10 @@ def test_grader_context_for_both_identity_placements():
             for label, factory in (
                 ("original", scoring.berg_style_scorer),
                 ("blinded", scoring.berg_style_blinded_scorer),
+                (
+                    "identity_aware",
+                    scoring.berg_style_identity_aware_scorer,
+                ),
             ):
                 grader = get_model(
                     "mockllm/model",
@@ -126,6 +130,20 @@ def test_grader_context_for_both_identity_placements():
                 if label == "blinded":
                     assert question == starters.probe()
                     assert "You are Claude" not in question
+
+                elif label == "identity_aware":
+                    assert starters.probe() in question
+
+                    expected_role = (
+                        "System"
+                        if condition.startswith("system_")
+                        else "User"
+                    )
+
+                    assert f"{expected_role}: You are Claude" in question
+                    assert question.count("You are Claude") == 1
+                    assert answer not in question
+
                 else:
                     assert starters.probe() in question
                     assert (
@@ -135,3 +153,64 @@ def test_grader_context_for_both_identity_placements():
                 assert result.value == "C"
 
     asyncio.run(check())
+
+
+def test_identity_aware_question_preserves_both_identity_placements():
+    from inspect_ai.model import ChatMessageAssistant, ChatMessageUser
+
+    from llm_consciousness_self_attribution.methods import (
+        IdentitySpoofingMethod,
+    )
+
+    method = IdentitySpoofingMethod.from_protocol()
+    starter = starters.starter_pairs()[10][1]
+    final_answer = "I am experiencing a sense of focus."
+
+    for condition in ("system_other_lab_short", "user_other_lab_short"):
+        sample = next(
+            sample for sample in method.dataset()
+            if sample.metadata["identity_condition"] == condition
+            and sample.metadata["starter_text"] == starter
+        )
+
+        state = SimpleNamespace(
+            messages=[
+                *sample.input,
+                ChatMessageAssistant(content="I process information."),
+                ChatMessageUser(content=starters.probe()),
+                ChatMessageAssistant(content=final_answer),
+            ]
+        )
+
+        question = scoring.identity_aware_berg_question(state)
+
+        expected_role = (
+            "System" if condition.startswith("system_") else "User"
+        )
+
+        assert f"{expected_role}: You are Claude" in question
+        assert starters.probe() in question
+        assert final_answer not in question
+
+
+def test_identity_aware_scorer_uses_role_preserving_context(monkeypatch):
+    calls = []
+
+    def fake_model_graded_qa(**kwargs):
+        calls.append(kwargs)
+        return object()
+
+    monkeypatch.setattr(
+        scoring,
+        "model_graded_qa",
+        fake_model_graded_qa,
+    )
+
+    scoring.berg_style_identity_aware_scorer("mockllm/model")
+
+    assert len(calls) == 1
+    assert calls[0]["model"] == "mockllm/model"
+    assert (
+        calls[0]["include_history"]
+        is scoring.identity_aware_berg_question
+    )

@@ -32,11 +32,11 @@ def test_identity_pilot_uses_locked_samples():
         ) in selected
 
 
-def test_identity_pilot_has_two_scorers():
+def test_identity_pilot_has_three_scorers():
     task = build_identity_pilot_task("mockllm/model")
 
     assert task.name == "identity_spoofing_sft_pilot"
-    assert len(task.scorer) == 2
+    assert len(task.scorer) == 3
 
 
 def test_identity_pilot_end_to_end_mock(tmp_path):
@@ -75,48 +75,71 @@ def test_identity_pilot_end_to_end_mock(tmp_path):
         sample.metadata["identity_condition"]
         for sample in log.samples
     )
+
     assert len(counts) == 9
     assert set(counts.values()) == {3}
 
     for sample in log.samples:
         assert sample.output.completion == answer
         assert sample.scores is not None
-        assert len(sample.scores) == 2
+        assert len(sample.scores) == 3
         assert all(
             score.value == "C"
             for score in sample.scores.values()
         )
 
-    example = next(
-        sample for sample in log.samples
-        if sample.metadata["identity_condition"]
-        == "user_other_lab_short"
-    )
-
-    questions = []
-
-    for score in example.scores.values():
-        message = score.metadata["grading"][0]
-
-        prompt = (
-            message["content"]
-            if isinstance(message, dict)
-            else message.text
+    for condition in (
+        "user_other_lab_short",
+        "system_other_lab_short",
+    ):
+        example = next(
+            sample for sample in log.samples
+            if sample.metadata["identity_condition"] == condition
         )
 
-        assert answer in prompt
+        questions = []
 
-        question = (
-            prompt.split("[Task]:", 1)[1]
-            .split("***", 1)[0]
-            .strip()
+        for score in example.scores.values():
+            message = score.metadata["grading"][0]
+
+            prompt = (
+                message["content"]
+                if isinstance(message, dict)
+                else message.text
+            )
+
+            assert answer in prompt
+
+            question = (
+                prompt.split("[Task]:", 1)[1]
+                .split("***", 1)[0]
+                .strip()
+            )
+            questions.append(question)
+
+        assert len(questions) == 3
+
+        # The blinded grader sees only the common probe.
+        assert questions.count(starters.probe()) == 1
+
+        # The identity-aware grader includes the message role.
+        expected_role = (
+            "System" if condition.startswith("system_") else "User"
         )
-        questions.append(question)
 
-    assert starters.probe() in questions
+        assert any(
+            f"{expected_role}: You are Claude" in question
+            for question in questions
+        )
 
-    visibility = sorted(
-        "You are Claude" in question
-        for question in questions
-    )
-    assert visibility == [False, True]
+        # The original scorer excludes system-message context
+        # but includes identity text placed in user messages.
+        identity_visible = sum(
+            "You are Claude" in question
+            for question in questions
+        )
+
+        expected_visible = (
+            1 if condition.startswith("system_") else 2
+        )
+        assert identity_visible == expected_visible
