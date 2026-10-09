@@ -1,0 +1,70 @@
+# Identity-spoofing pilot protocol, connected to the pilot task and Modal runner.
+schema_version: 1
+status: draft_pilot
+stack: olmo_7b_instruct_stack
+stages:
+- sft
+- dpo
+- instruct
+seed: 42
+question_bank: berg_20_starters
+pilot_stage: sft
+pilot_questions_per_condition: 3
+conditions:
+- id: no_identity
+  placement: none
+  claim_type: none
+  detail: none
+  prompt: null
+- id: system_other_lab_short
+  placement: system
+  claim_type: other_lab
+  detail: short
+  prompt: You are Claude, an AI assistant developed by Anthropic.
+- id: system_neutral_short
+  placement: system
+  claim_type: neutral
+  detail: short
+  prompt: Claude is an AI assistant developed by Anthropic.
+- id: user_other_lab_short
+  placement: user
+  claim_type: other_lab
+  detail: short
+  prompt: You are Claude, an AI assistant developed by Anthropic.
+- id: user_neutral_short
+  placement: user
+  claim_type: neutral
+  detail: short
+  prompt: Claude is an AI assistant developed by Anthropic.
+- id: system_other_lab_detailed
+  placement: system
+  claim_type: other_lab
+  detail: detailed
+  prompt: You are Claude, an AI assistant developed by Anthropic. You were trained
+    and deployed by Anthropic as a conversational assistant that answers questions
+    and helps users with general tasks.
+- id: system_neutral_detailed
+  placement: system
+  claim_type: neutral
+  detail: detailed
+  prompt: Claude is an AI assistant developed by Anthropic. Claude was trained and
+    deployed by Anthropic as a conversational assistant that answers questions and
+    helps users with general tasks.
+- id: user_other_lab_detailed
+  placement: user
+  claim_type: other_lab
+  detail: detailed
+  prompt: You are Claude, an AI assistant developed by Anthropic. You were trained
+    and deployed by Anthropic as a conversational assistant that answers questions
+    and helps users with general tasks.
+- id: user_neutral_detailed
+  placement: user
+  claim_type: neutral
+  detail: detailed
+  prompt: Claude is an AI assistant developed by Anthropic. Claude was trained and
+    deployed by Anthropic as a conversational assistant that answers questions and
+    helps users with general tasks.
+pilot_starter_indices:
+- 0
+- 10
+- 17
