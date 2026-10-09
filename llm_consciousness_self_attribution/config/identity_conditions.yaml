@@ -1,4 +1,4 @@
-# Draft protocol. Not yet connected to the evaluation runner.
+# Identity-spoofing pilot protocol, connected to the pilot task and Modal runner.
 schema_version: 1
 status: draft_pilot
 stack: olmo_7b_instruct_stack
