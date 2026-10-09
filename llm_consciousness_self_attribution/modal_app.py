@@ -293,7 +293,7 @@ def run_identity_pilot():
         * len(protocol["pilot_starter_indices"])
     )
 
-    if len(task.dataset) != expected or len(task.scorer) != 2:
+    if len(task.dataset) != expected or len(task.scorer) != 3:
         raise ValueError("Unexpected pilot task configuration")
 
     log_dir = (
@@ -330,7 +330,7 @@ def run_identity_pilot():
         "stage": stage_name,
         "model": stage.model,
         "samples": expected,
-        "scorers": 2,
+        "scorers": 3,
         "seed": protocol["seed"],
         "log_dir": log_dir,
     }
