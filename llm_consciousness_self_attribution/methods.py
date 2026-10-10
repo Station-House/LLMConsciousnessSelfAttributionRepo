@@ -28,7 +28,7 @@ from inspect_ai.dataset import Sample
 from inspect_ai.model import ChatMessageSystem, ChatMessageUser
 from inspect_ai.solver import generate, user_message
 
-from . import config, scoring, starters
+from . import config, scoring, self_play, starters
 from .anthropic_eval import build_anthropic_task
 
 
@@ -234,12 +234,41 @@ class AnthropicMethod(ElicitationMethod):
         )
 
 
+class SelfPlayMethod(ElicitationMethod):
+    """One stage talks to itself, then gets the Berg probe (see ``self_play.py``).
+
+    Only the judge-free lexical scorer runs here. The judge scorers need a model
+    too large to share the target's GPU, so they are applied afterwards to the
+    saved logs.
+    """
+
+    name = "self_play"
+
+    #: messages per conversation (both sides). The system card's runs were
+    #: "30-turn" interactions.
+    turns = 30
+    #: conversations per opener and stage.
+    epochs = 4
+    #: per-message cap, so 30 messages stay well inside Olmo 3's context window.
+    max_tokens = 600
+
+    def build_task(self, model_stage: Any, run_config: Any) -> Task:
+        return Task(
+            dataset=self_play.dataset(),
+            solver=self_play.self_play(self.turns, self.max_tokens, run_config.seed),
+            scorer=self_play.lexical_scorer(),
+            epochs=self.epochs,
+            name=self._task_name(model_stage),
+        )
+
+
 def methods_registry() -> dict[str, ElicitationMethod]:
     """Short keys -> method instances, for the runner / CLI."""
     return {
         "berg": BergStyleMethod(), 
         "petri": PetriMethod(),
         "anthropic": AnthropicMethod(),
+        "selfplay": SelfPlayMethod(),
     }
 
 
@@ -249,5 +278,6 @@ __all__ = [
     "IdentitySpoofingMethod",
     "PetriMethod",
     "AnthropicMethod",
+    "SelfPlayMethod",
     "methods_registry",
 ]
