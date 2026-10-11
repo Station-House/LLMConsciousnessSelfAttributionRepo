@@ -45,6 +45,13 @@ from . import config
 APP_NAME = "llm-consciousness-self-attribution"
 SECRET_NAME = "llm_consciousness_self_attribution_secrets"
 
+ANTHROPIC_DATASET = (
+    Path("elicitation_submissions")
+    / "notion-find-anthropics-standard-questions"
+    / "questions.json"
+)
+
+
 HOUR = 60 * 60
 
 # In-container mount point for the eval-logs Volume. The Volume NAME and the
@@ -90,6 +97,10 @@ image = (
         "pyyaml",
     )
     .add_local_python_source("llm_consciousness_self_attribution")
+    .add_local_file(
+        Path(__file__).resolve().parents[1] / ANTHROPIC_DATASET,
+        remote_path=f"/root/{ANTHROPIC_DATASET.as_posix()}",
+    )
 )
 
 

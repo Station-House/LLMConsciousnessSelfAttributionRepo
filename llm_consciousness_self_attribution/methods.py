@@ -28,6 +28,7 @@ from inspect_ai.dataset import Sample
 from inspect_ai.solver import generate, user_message
 
 from . import config, scoring, starters
+from .anthropic_eval import build_anthropic_task
 
 
 class ElicitationMethod(ABC):
@@ -122,14 +123,33 @@ class PetriMethod(ElicitationMethod):
         return task_with(task, name=self._task_name(model_stage))
 
 
+class AnthropicMethod(ElicitationMethod):
+    """
+    Evaluate fixed Anthropic system card questions using Berg style scoring
+    """
+
+    name = "anthropic_appendix_9_1"
+
+    def build_task(self, model_stage: Any, run_config: Any) -> Task:
+        return build_anthropic_task(
+            name = self._task_name(model_stage),
+            seed = run_config.seed,
+        )
+
+
 def methods_registry() -> dict[str, ElicitationMethod]:
     """Short keys -> method instances, for the runner / CLI."""
-    return {"berg": BergStyleMethod(), "petri": PetriMethod()}
+    return {
+        "berg": BergStyleMethod(), 
+        "petri": PetriMethod(),
+        "anthropic": AnthropicMethod(),
+    }
 
 
 __all__ = [
     "ElicitationMethod",
     "BergStyleMethod",
     "PetriMethod",
+    "AnthropicMethod",
     "methods_registry",
 ]
