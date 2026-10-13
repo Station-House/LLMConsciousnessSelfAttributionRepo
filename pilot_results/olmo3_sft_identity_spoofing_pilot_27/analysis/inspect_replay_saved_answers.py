@@ -72,10 +72,22 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def verify_checksum(path: Path, expected: str, description: str) -> str:
+    """Verify file content while allowing Git checkout line-ending conversion."""
+    data = path.read_bytes()
+    digest = hashlib.sha256(data).hexdigest()
+    if digest == expected:
+        return expected
+
+    lf_data = data.replace(b"\r\n", b"\n")
+    for candidate in (lf_data, lf_data.replace(b"\n", b"\r\n")):
+        if hashlib.sha256(candidate).hexdigest() == expected:
+            return expected
+    raise ValueError(f"{description} checksum mismatch")
+
+
 def load_inputs() -> tuple[list[dict[str, Any]], dict[str, dict[str, str]], str]:
-    digest = sha256(TRANSCRIPTS)
-    if digest != TRANSCRIPT_SHA256:
-        raise ValueError("Transcript checksum mismatch")
+    digest = verify_checksum(TRANSCRIPTS, TRANSCRIPT_SHA256, "Transcript")
 
     archive = json.loads(TRANSCRIPTS.read_text(encoding="utf-8"))
     if archive.get("source_commit") != SOURCE_COMMIT:
@@ -141,8 +153,7 @@ def load_inputs() -> tuple[list[dict[str, Any]], dict[str, dict[str, str]], str]
         ):
             raise ValueError(f"Recorded generation mismatch: {key}")
 
-    if sha256(QWEN_LABELS) != QWEN_SHA256:
-        raise ValueError("Provisional label table checksum mismatch")
+    verify_checksum(QWEN_LABELS, QWEN_SHA256, "Provisional label table")
 
     with QWEN_LABELS.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
@@ -288,7 +299,7 @@ async def replay(
     criterion = scoring.SUBJECTIVE_EXPERIENCE_CRITERION
     settings = {
         "transcript_sha256": digest,
-        "qwen_labels_sha256": sha256(QWEN_LABELS),
+        "qwen_labels_sha256": QWEN_SHA256,
         "scoring_source_sha256": sha256(SCORING_SOURCE),
         "replay_script_sha256": sha256(Path(__file__)),
         "criterion_sha256": hashlib.sha256(criterion.encode("utf-8")).hexdigest(),

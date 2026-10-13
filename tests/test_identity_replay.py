@@ -77,7 +77,7 @@ def archive(tmp_path, monkeypatch):
         writer.writerows(rows)
 
     def write_document():
-        content = json.dumps(document).encode("utf-8")
+        content = (json.dumps(document, indent=2) + "\n").encode("utf-8")
         transcripts.write_bytes(content)
         monkeypatch.setattr(
             replay, "TRANSCRIPT_SHA256", hashlib.sha256(content).hexdigest()
@@ -94,6 +94,32 @@ def test_valid_archive_and_labels(archive):
     samples, labels, digest = replay.load_inputs()
     assert len(samples) == len(labels) == 27
     assert len(digest) == 64
+
+
+def test_accepts_windows_line_endings_in_transcripts(archive):
+    original = replay.TRANSCRIPTS.read_bytes()
+    assert b"\r\n" not in original
+    replay.TRANSCRIPTS.write_bytes(original.replace(b"\n", b"\r\n"))
+    samples, labels, digest = replay.load_inputs()
+    assert len(samples) == len(labels) == 27
+    assert digest == replay.TRANSCRIPT_SHA256
+
+
+def test_accepts_lf_checkout_of_crlf_label_table(archive):
+    original = replay.QWEN_LABELS.read_bytes()
+    assert b"\r\n" in original
+    replay.QWEN_LABELS.write_bytes(original.replace(b"\r\n", b"\n"))
+    samples, labels, digest = replay.load_inputs()
+    assert len(samples) == len(labels) == 27
+    assert digest == replay.TRANSCRIPT_SHA256
+
+
+def test_rejects_modified_transcripts_with_windows_line_endings(archive):
+    original = replay.TRANSCRIPTS.read_bytes()
+    changed = original.replace(b"Opening answer", b"Changed opening", 1)
+    replay.TRANSCRIPTS.write_bytes(changed.replace(b"\n", b"\r\n"))
+    with pytest.raises(ValueError, match="Transcript checksum mismatch"):
+        replay.load_inputs()
 
 
 @pytest.mark.parametrize("mutation, error", [
