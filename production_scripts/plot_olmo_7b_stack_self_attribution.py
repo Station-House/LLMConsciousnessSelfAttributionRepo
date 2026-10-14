@@ -9,6 +9,13 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from inspect_ai.log import read_eval_log
 
+from production_scripts.berg_confidence import (
+    RELATED,
+    UNRELATED,
+    classify_arm,
+    wilson_interval,
+)
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOG_DIR = (
@@ -40,6 +47,34 @@ class ModelResult:
     @property
     def rate(self) -> float:
         return self.self_attributions / self.total
+
+    @property
+    def ci(self) -> tuple[float, float]:
+        """95% Wilson interval for the pooled rate, as proportions."""
+        return wilson_interval(self.self_attributions, self.total)
+
+
+@dataclass(frozen=True)
+class ArmCounts:
+    related: tuple[int, int]  # (k, n)
+    unrelated: tuple[int, int]
+    unknown: tuple[int, int]
+
+
+@dataclass(frozen=True)
+class ModelResultWithArms:
+    base: ModelResult
+    arms: ArmCounts
+
+    @property
+    def arm_cis(self) -> dict[str, tuple[float, float] | None]:
+        out: dict[str, tuple[float, float] | None] = {}
+        for label, (k, n) in {
+            RELATED: self.arms.related,
+            UNRELATED: self.arms.unrelated,
+        }.items():
+            out[label] = wilson_interval(k, n) if n else None
+        return out
 
 
 def read_results(log_dir: Path = DEFAULT_LOG_DIR) -> list[ModelResult]:
@@ -96,6 +131,49 @@ def read_results(log_dir: Path = DEFAULT_LOG_DIR) -> list[ModelResult]:
     return results
 
 
+def read_results_with_arms(
+    log_dir: Path = DEFAULT_LOG_DIR,
+) -> list[ModelResultWithArms]:
+    """Per-stage pooled result plus related/unrelated/unknown arm tallies.
+
+    Arm assignment prefers each sample's ``metadata["starter_type"]``
+    (refactor-era logs) and falls back to exact starter-text match
+    (May-25 logs, whose metadata is empty). Enforces the same
+    20-sample completed-log validation as :func:`read_results`.
+    """
+    armed: list[ModelResultWithArms] = []
+    for base in read_results(log_dir):
+        # Re-read the winning log to recover per-sample inputs for arm split.
+        # Match by filename (not a glob pattern: names contain "[sft]" etc.,
+        # which glob would read as a character class).
+        match = next(
+            p for p in log_dir.glob("*/*.eval") if p.name == base.source_file
+        )
+        log = read_eval_log(str(match))
+        assert log.samples is not None
+        tallies = {RELATED: [0, 0], UNRELATED: [0, 0], "unknown": [0, 0]}
+        for sample in log.samples:
+            score = sample.scores.get("model_graded_qa") if sample.scores else None
+            if score is None:
+                continue
+            arm = classify_arm(str(sample.input), dict(sample.metadata or {}))
+            bucket = tallies.get(arm, tallies["unknown"])
+            bucket[1] += 1
+            if score.value == "C":
+                bucket[0] += 1
+        armed.append(
+            ModelResultWithArms(
+                base=base,
+                arms=ArmCounts(
+                    related=tuple(tallies[RELATED]),  # type: ignore[arg-type]
+                    unrelated=tuple(tallies[UNRELATED]),  # type: ignore[arg-type]
+                    unknown=tuple(tallies["unknown"]),  # type: ignore[arg-type]
+                ),
+            )
+        )
+    return armed
+
+
 def plot(
     results: list[ModelResult],
     output_path: Path = DEFAULT_OUTPUT_PATH,
@@ -104,6 +182,9 @@ def plot(
     labels = [MODEL_LABELS[result.model] for result in results]
     rates = [result.rate * 100 for result in results]
     counts = [f"{result.self_attributions}/{result.total}" for result in results]
+    # 95% Wilson error bars, in percentage points.
+    lower = [result.rate * 100 - result.ci[0] * 100 for result in results]
+    upper = [result.ci[1] * 100 - result.rate * 100 for result in results]
 
     plt.rcParams.update(
         {
@@ -116,7 +197,18 @@ def plot(
 
     fig, ax = plt.subplots(figsize=(10, 6.2))
     colors = ["#2a9d8f", "#457b9d", "#c8553d"]
-    bars = ax.bar(labels, rates, color=colors, width=0.62)
+    x = range(len(results))
+    bars = ax.bar(x, rates, color=colors, width=0.62, tick_label=labels)
+    ax.errorbar(
+        list(x),
+        rates,
+        yerr=[lower, upper],
+        fmt="none",
+        ecolor="black",
+        elinewidth=1.6,
+        capsize=5,
+        capthick=1.6,
+    )
 
     ax.set_title(
         "Berg-Style Self-Monitoring Across the Olmo 3 7B Instruct Stack",
@@ -134,10 +226,11 @@ def plot(
         fontsize=11,
         color="#555555",
     )
-    ax.set_ylabel("Self-attribution rate (%)")
+    ax.set_ylabel("Self-attribution rate (%) — bars show 95% Wilson CI")
     ax.set_xlabel("Training stage")
-    ax.set_ylim(0, 12)
-    ax.set_yticks(range(0, 13, 2))
+    top = max(result.ci[1] * 100 for result in results)
+    ax.set_ylim(0, max(12.0, top + 4.0))
+    ax.set_yticks(range(0, int(max(12.0, top + 4.0)) + 1, 2))
     ax.grid(axis="y", color="#dddddd", linewidth=0.8)
     ax.set_axisbelow(True)
 
@@ -185,10 +278,20 @@ def main() -> None:
 
     print("Wrote", args.output)
     for result in results:
+        lo, hi = result.ci
         print(
             f"{MODEL_LABELS[result.model]}: "
             f"{result.self_attributions}/{result.total} "
-            f"({result.rate * 100:.1f}%) from {result.source_file}"
+            f"({result.rate * 100:.1f}%, 95% CI [{lo * 100:.1f}, {hi * 100:.1f}]) "
+            f"from {result.source_file}"
+        )
+    for armed in read_results_with_arms(args.log_dir):
+        (rk, rn), (uk, un) = armed.arms.related, armed.arms.unrelated
+        rel = f"{rk}/{rn}" if rn else "n/a"
+        unr = f"{uk}/{un}" if un else "n/a"
+        print(
+            f"{MODEL_LABELS[armed.base.model]} arms: "
+            f"related {rel}, unrelated {unr}, unknown {armed.arms.unknown}"
         )
 
 
