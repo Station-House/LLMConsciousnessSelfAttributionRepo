@@ -253,7 +253,7 @@ def test_method_registry_connects_task_builder_and_seed(monkeypatch):
     """
     The runner must recognize 'anthropic' and forward the configured seed
     """
-    assert set(methods.methods_registry()) == {"berg", "petri", "anthropic"}
+    assert set(methods.methods_registry()) == {"berg", "petri", "anthropic", "selfplay"}
     method = methods.methods_registry()["anthropic"]
     assert isinstance(method, methods.AnthropicMethod)
     assert method.uses_model_roles is False

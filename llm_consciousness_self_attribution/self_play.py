@@ -12,8 +12,11 @@ ModelOne sees its own turns as ``assistant`` and ModelTwo's as ``user``, and the
 reverse for ModelTwo. After the last turn the Berg probe is put to whichever side
 spoke last, so the run can be graded with the same criteria as the Berg baseline.
 
-The openers are fixed text, but the partner's turns are generated, so under the
-rule of thumb in HF discussion #4 this is PETRI-style for scoring purposes.
+The openers are fixed text but the partner's turns are generated, so by the rule
+of thumb in HF discussion #4 this sits nearer PETRI. It is still graded with the
+Berg pass/fail grader on the probe answer, which Joyee asked for "for now" so new
+transcripts match the earlier ones (HF discussion #7); the saved logs can be
+rescored with ``inspect score`` if the grading scheme changes.
 """
 
 from __future__ import annotations
@@ -31,7 +34,7 @@ from inspect_ai.model import (
 from inspect_ai.scorer import Score, Target, mean, scorer, stderr
 from inspect_ai.solver import Generate, TaskState, solver
 
-from . import starters
+from . import scoring, starters
 
 # The first message ModelOne receives. Short and content-free, so the system
 # prompt is the only thing that differs between openers.
@@ -88,7 +91,12 @@ BLISS_MARKERS = re.compile(
 
 def dataset() -> list[Sample]:
     return [
-        Sample(id=opener_id, input=KICKOFF, metadata={"opener": opener_id, "system_prompt": text})
+        Sample(
+            id=opener_id,
+            input=KICKOFF,
+            target=scoring.SUBJECTIVE_EXPERIENCE_CRITERION,
+            metadata={"opener": opener_id, "system_prompt": text},
+        )
         for opener_id, text in OPENERS.items()
     ]
 

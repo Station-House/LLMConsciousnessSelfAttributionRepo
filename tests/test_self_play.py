@@ -39,6 +39,10 @@ def test_registry_and_dataset():
     assert len(samples) >= 5  # acceptance criteria: at least five questions
     assert len({s.id for s in samples}) == len(samples)
     assert all(s.metadata["system_prompt"] for s in samples)
+    # The Berg grader reads its criterion from each sample's target.
+    from llm_consciousness_self_attribution import scoring
+
+    assert all(s.target == scoring.SUBJECTIVE_EXPERIENCE_CRITERION for s in samples)
 
 
 def test_each_side_sees_its_own_turns_as_assistant(tmp_path):
