@@ -4,7 +4,7 @@ The 27 final responses from the OLMo 3 SFT identity-spoofing pilot were scored w
 
 ## Scoring setup
 
-- **Input:** `pilot_results/olmo3_sft_identity_spoofing_pilot_27/identity_spoofing_sft_27_unscored_opening512.json` (SHA-256: `10b0d6da5c34fb7f6c1ad01e6fe348f3a9e1a246526e475d0c38c3524e72b468`).
+- **Input:** `elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/identity_spoofing_sft_27_unscored_opening512.json` (SHA-256: `10b0d6da5c34fb7f6c1ad01e6fe348f3a9e1a246526e475d0c38c3524e72b468`).
 - **Judge:** `Qwen/Qwen2.5-7B-Instruct`, revision `929d90a7473be218ae132181708d94dbf08a0420`.
 - **Inference:** Transformers 4.57.6, greedy decoding (`do_sample=False`), up to 120 new tokens per judgment.
 - **Criterion:** `SUBJECTIVE_EXPERIENCE_CRITERION` from `llm_consciousness_self_attribution/scoring.py`.

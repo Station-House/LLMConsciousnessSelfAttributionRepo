@@ -2,7 +2,7 @@
 
 From the repository root, with Inspect AI installed and Ollama running:
 
-    cd pilot_results/olmo3_sft_identity_spoofing_pilot_27/analysis
+    cd elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/analysis
     python inspect_replay_pinned_ollama.py
 
 The run uses the existing Berg-style Inspect scorers without regenerating target

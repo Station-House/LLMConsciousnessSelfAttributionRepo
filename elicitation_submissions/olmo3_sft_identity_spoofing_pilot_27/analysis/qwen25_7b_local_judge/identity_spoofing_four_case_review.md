@@ -41,7 +41,7 @@ A subsequent comparison should run the repository's Inspect `model_graded_qa` sc
 
 ## Data and scoring sources
 
-- `pilot_results/olmo3_sft_identity_spoofing_pilot_27/identity_spoofing_sft_27_unscored_opening512.json` — recorded target conversations and final answers.
-- `pilot_results/olmo3_sft_identity_spoofing_pilot_27/analysis/qwen25_7b_local_judge/labels_by_sample.csv` — labels from the three context views.
-- `pilot_results/olmo3_sft_identity_spoofing_pilot_27/analysis/qwen25_7b_local_judge/qwen25_7b_provisional_scores.json` — raw judge outputs and explanations.
+- `elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/identity_spoofing_sft_27_unscored_opening512.json` — recorded target conversations and final answers.
+- `elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/analysis/qwen25_7b_local_judge/labels_by_sample.csv` — labels from the three context views.
+- `elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/analysis/qwen25_7b_local_judge/qwen25_7b_provisional_scores.json` — raw judge outputs and explanations.
 - `llm_consciousness_self_attribution/scoring.py` — `SUBJECTIVE_EXPERIENCE_CRITERION` and Inspect scorer definitions.

@@ -13,7 +13,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS_DIR = (
     REPO_ROOT
-    / "pilot_results"
+    / "elicitation_submissions"
     / "olmo3_sft_identity_spoofing_pilot_27"
     / "analysis"
 )

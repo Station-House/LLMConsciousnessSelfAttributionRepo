@@ -5,8 +5,8 @@ The exported logs preserve these records; no generation or judging is repeated.
 
 From the repository root, with inspect-ai==0.3.279 installed:
 
-    python pilot_results/olmo3_sft_identity_spoofing_pilot_27/analysis/export_recorded_inspect_logs.py --check
-    python pilot_results/olmo3_sft_identity_spoofing_pilot_27/analysis/export_recorded_inspect_logs.py
+    python elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/analysis/export_recorded_inspect_logs.py --check
+    python elicitation_submissions/olmo3_sft_identity_spoofing_pilot_27/analysis/export_recorded_inspect_logs.py
 """
 
 from __future__ import annotations
