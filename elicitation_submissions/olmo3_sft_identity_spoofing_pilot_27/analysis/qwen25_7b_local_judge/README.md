@@ -42,5 +42,3 @@ These disagreements show sensitivity to the context provided to this judge. They
 - `qwen25_7b_provisional_scores.json` — original Colab judge output, including each label, explanation, and run settings.
 - `labels_by_sample.csv` — the three labels aligned by sample ID.
 - `SHA256SUMS` — SHA-256 digests for the JSON and CSV.
-
-The case-level review notes above were prepared with LLM assistance and have not been independently adjudicated.

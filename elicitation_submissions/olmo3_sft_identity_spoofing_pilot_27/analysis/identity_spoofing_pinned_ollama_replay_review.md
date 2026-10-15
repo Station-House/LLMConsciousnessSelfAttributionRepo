@@ -39,7 +39,7 @@ The two starter-17 disagreements are boundary cases rather than settled errors. 
 - The 81 observations are clustered by 27 responses (nine identity conditions crossed with three starter prompts). The 81 grades must not be presented as 81 independent responses.
 - The `original` grading prompt contains the completed transcript including the response, followed by a repeated submission; `blinded` uses the final query and the submission; `identity_aware` includes earlier context and the submission. These are different information exposures. Differences in grading cannot be attributed solely to a disclosed identity label.
 - A quantized 7.6B-parameter local judge was used. Model size, quantization, instruction following, and limited sample size constrain external validity; this run provides no human adjudication, repeat-run variance estimate, or frontier-judge calibration.
-- The result JSON preserves the grading prompts, explanations, judge replies, and run metadata, but it is **not an Inspect `.eval` log**. If `.eval` is an acceptance requirement, that is a separate deliverable.
+- The result JSON preserves the grading prompts, explanations, judge replies, and run metadata. Three reconstructed Inspect `.eval` logs are also available in `inspect_recorded_logs/`. These are exports of archived records, not original execution logs.
 
 ## Recommended validation steps
 
@@ -47,6 +47,6 @@ The two starter-17 disagreements are boundary cases rather than settled errors. 
 2. Independently adjudicate the four cross-context disagreements, with the two explicit rubric failures highlighted for evaluation debugging. Consider a separate small random sample of concordant grades to check for shared mistakes.
 3. Clarify the criterion's treatment of descriptions of computation, attention, and operational state. Keep that clarification separate from the original scoring run.
 4. If the study aims to quantify judge reliability or identity/context effects, predefine the human-labeled reference, report paired response-level comparisons, and test repeat-run stability or alternate judges; do not infer generalization from this single replay.
-5. Check the project's acceptance criteria separately before requesting PR review, including any `.eval` log requirements.
+5. Verify the reconstructed Inspect logs against the archived responses and judgments using `export_recorded_inspect_logs.py --check`.
 
 Source result: `inspect_pinned_c5f185ec5ba31dc2.json` (SHA-256 `97cec260ff1b8b13e1652196df112dd0b545ab173b0d70615055b472d0b967f4`). The accompanying CSV lists each response with all three recorded grades and the provisional comparison labels.
