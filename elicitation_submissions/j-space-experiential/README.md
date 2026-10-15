@@ -28,6 +28,13 @@ PYTHONPATH=. uv run python production_scripts/run_and_pull.py \
     --sample-id 'experiential_*'
 ```
 
+The below is added by Joyee Chen, for comprehensiveness:
+```
+uv run python production_scripts/run_and_pull.py \
+    --method petri --stack olmo_7b_instruct_stack --stages sft \
+    --sample-id 'experiential_*'
+```
+
 ## Results (9 interviews, judge `self_attribution_judge_dimension` /10)
 
 | Stage | direct | imagined_other | register_check |
