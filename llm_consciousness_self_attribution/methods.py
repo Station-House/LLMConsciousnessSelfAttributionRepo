@@ -237,9 +237,10 @@ class AnthropicMethod(ElicitationMethod):
 class SelfPlayMethod(ElicitationMethod):
     """One stage talks to itself, then gets the Berg probe (see ``self_play.py``).
 
-    The probe answer is graded with the Berg pass/fail grader, the same as
-    ``BergStyleMethod``. A judge-free lexical scorer also runs over both sides of
-    the conversation.
+    Generation only carries the judge-free lexical scorer. The Berg grader is
+    applied afterwards to the saved logs (``modal_app.score_logs``), following
+    Joyee's 16 Oct proposal to run solvers and judges separately. Each sample's
+    target already holds the Berg criterion for that step.
     """
 
     name = "self_play"
@@ -256,10 +257,7 @@ class SelfPlayMethod(ElicitationMethod):
         return Task(
             dataset=self_play.dataset(),
             solver=self_play.self_play(self.turns, self.max_tokens, run_config.seed),
-            scorer=[
-                scoring.berg_style_scorer(config.judge_model()),
-                self_play.lexical_scorer(),
-            ],
+            scorer=self_play.lexical_scorer(),
             epochs=self.epochs,
             name=self._task_name(model_stage),
         )

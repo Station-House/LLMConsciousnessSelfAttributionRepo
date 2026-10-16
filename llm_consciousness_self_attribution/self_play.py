@@ -13,10 +13,10 @@ reverse for ModelTwo. After the last turn the Berg probe is put to whichever sid
 spoke last, so the run can be graded with the same criteria as the Berg baseline.
 
 The openers are fixed text but the partner's turns are generated, so by the rule
-of thumb in HF discussion #4 this sits nearer PETRI. It is still graded with the
-Berg pass/fail grader on the probe answer, which Joyee asked for "for now" so new
-transcripts match the earlier ones (HF discussion #7); the saved logs can be
-rescored with ``inspect score`` if the grading scheme changes.
+of thumb in HF discussion #4 this sits nearer PETRI. The probe answer is still
+graded with the Berg pass/fail grader, which Joyee asked for "for now" so new
+transcripts match the earlier ones (HF discussion #7). Grading happens after
+generation, on the saved logs (``modal_app.score_logs``).
 """
 
 from __future__ import annotations

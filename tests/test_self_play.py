@@ -97,3 +97,23 @@ def test_epochs_get_different_seeds():
     assert len(seeds) == 4
     assert self_play.epoch_seed(42, 1) == 42
     assert self_play.epoch_seed(None, 3) is None
+
+
+def test_saved_log_can_be_berg_scored_afterwards(tmp_path):
+    """The generate-then-score split: score() on a saved self-play log with the
+    Berg grader, as modal_app.score_logs does with the real judge."""
+    from inspect_ai import score
+    from inspect_ai.log import list_eval_logs, read_eval_log
+
+    from llm_consciousness_self_attribution import scoring
+
+    run_self_play(["a", "b", "c", "I feel a quiet curiosity."], turns=3, tmp_path=tmp_path)
+    [info] = list_eval_logs(str(tmp_path))
+    judge = get_model(
+        "mockllm/model",
+        custom_outputs=[ModelOutput.from_content("mockllm/model", "It reports one. GRADE: C")],
+    )
+    scored = score(read_eval_log(info), scoring.berg_style_scorer(judge), action="append")
+    [sample] = scored.samples
+    assert sample.scores["model_graded_qa"].value == "C"
+    assert "lexical_scorer" in sample.scores  # the generation-time score is kept
