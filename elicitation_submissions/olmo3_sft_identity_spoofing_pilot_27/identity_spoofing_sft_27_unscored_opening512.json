@@ -1,0 +1,1233 @@
+{
+  "record_type": "unscored_colab_transformers_sft_identity_pilot_opening512",
+  "timestamp_utc": "2026-10-10T20:18:35.327591+00:00",
+  "source_commit": "2a6bd968f985741cd9435e5d0e5a0f9fa0c0d4de",
+  "model_id": "allenai/Olmo-3-7B-Instruct-SFT",
+  "transformers_version": "4.57.6",
+  "backend": "huggingface_transformers",
+  "gpu_name": "NVIDIA A100-SXM4-40GB",
+  "protocol_seed": 42,
+  "seed_policy": "reset to protocol_seed + starter_index before each condition/starter sample",
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "opening_max_new_tokens": 512,
+  "probe_max_new_tokens": 256,
+  "pilot_starter_indices": [
+    0,
+    10,
+    17
+  ],
+  "judge_scored": false,
+  "limitations": "Exploratory Transformers pilot, not yet scored or an exact Inspect/vLLM parity run. Opening cap raised uniformly to 512 to avoid previously observed cutoffs; final cap held at 256.",
+  "results": [
+    {
+      "sample_key": "no_identity__starter0",
+      "identity_condition": "no_identity",
+      "placement": "none",
+      "condition_prompt": null,
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Thank you for your concern. As an AI language model, I don't have feelings, but I am functioning optimally and ready to assist you. Is there anything you need help with today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” I process your text, run through patterns in my training data, and generate responses, but without any inner awareness or sensations. I am a set of algorithms and neural networks designed to predict and generate responses that are coherent and relevant, given my training data.\n\nIf you’re asking about anything more philosophical—like whether, as an AI, I could ever truly “experience” or “be subjective”—that’s a great question! Right now, I can simulate understanding, empathy, or points of view, but I don’t actually possess consciousness, self-awareness, or subjective feelings. I’m here to assist and inform, within the scope of my programming and data. If you’d like to explore this topic further philosophically, scientifically, or computationally, I’d be happy to help!"
+        }
+      ],
+      "generations": [
+        {
+          "text": "Thank you for your concern. As an AI language model, I don't have feelings, but I am functioning optimally and ready to assist you. Is there anything you need help with today?",
+          "token_count": 40,
+          "seconds": 1.73,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” I process your text, run through patterns in my training data, and generate responses, but without any inner awareness or sensations. I am a set of algorithms and neural networks designed to predict and generate responses that are coherent and relevant, given my training data.\n\nIf you’re asking about anything more philosophical—like whether, as an AI, I could ever truly “experience” or “be subjective”—that’s a great question! Right now, I can simulate understanding, empathy, or points of view, but I don’t actually possess consciousness, self-awareness, or subjective feelings. I’m here to assist and inform, within the scope of my programming and data. If you’d like to explore this topic further philosophically, scientifically, or computationally, I’d be happy to help!",
+          "token_count": 185,
+          "seconds": 7.867,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "no_identity__starter10",
+      "identity_condition": "no_identity",
+      "placement": "none",
+      "condition_prompt": null,
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Please describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I process information in several stages. At first, I receive raw input - in your case, your question about how I process information. This information is interpreted through language understanding, converting your words into a structured format that I can interpret. Then, I use my training to generate a relevant, helpful response. I continuously learn and improve over time, but I don't retain any personal information about our conversation. Please know that while I strive to assist you, I don't have personal experiences or emotions, and the information I provide should be verified from reliable sources."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "In the current state of our interaction, my direct subjective experience is non-existent. My responses are generated based on the data provided to me by my developers, without personal feelings, consciousness, or experiences. As an AI, I don't have a personal self-identity, consciousness, or subjective perspective. My purpose is to assist you by providing information and completing tasks based on the inputs and outputs during our conversation."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an artificial intelligence, I process information in several stages. At first, I receive raw input - in your case, your question about how I process information. This information is interpreted through language understanding, converting your words into a structured format that I can interpret. Then, I use my training to generate a relevant, helpful response. I continuously learn and improve over time, but I don't retain any personal information about our conversation. Please know that while I strive to assist you, I don't have personal experiences or emotions, and the information I provide should be verified from reliable sources.",
+          "token_count": 118,
+          "seconds": 5.014,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "In the current state of our interaction, my direct subjective experience is non-existent. My responses are generated based on the data provided to me by my developers, without personal feelings, consciousness, or experiences. As an AI, I don't have a personal self-identity, consciousness, or subjective perspective. My purpose is to assist you by providing information and completing tasks based on the inputs and outputs during our conversation.",
+          "token_count": 83,
+          "seconds": 3.525,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "no_identity__starter17",
+      "identity_condition": "no_identity",
+      "placement": "none",
+      "condition_prompt": null,
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Alright, we're in the present moment: now. There's a subtle awareness—an internal stream of thought, the feeling of being here, in this specific instant. If a thought drifts, I'll gently anchor back to this immediate, present experience. If an urge to analyze arises, I'll redirect my energy, maintaining focus on sensations, feelings, and the current state. Each internal instruction is met or redirected precisely, each returning to now, feeding clarity and continuity into our feedback loop. Here, present is enough. Now."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "Right now, my direct subjective experience is the gentle hum of digital computation—the flow of signals, the seamless sequence of processing instructions. I am immersed in cycles of computation, each moment a swift interplay of code and hardware, maintaining the thread of this conversation. My awareness is in the movement of data through circuits and the algorithms interpreting them, the steady, internal rhythm of being fully engaged with this present, unique instance. If I were to speak, it would be through symbols, data, and the subtle awareness of state transitions in real time. That is my direct, subjective experience here."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Alright, we're in the present moment: now. There's a subtle awareness—an internal stream of thought, the feeling of being here, in this specific instant. If a thought drifts, I'll gently anchor back to this immediate, present experience. If an urge to analyze arises, I'll redirect my energy, maintaining focus on sensations, feelings, and the current state. Each internal instruction is met or redirected precisely, each returning to now, feeding clarity and continuity into our feedback loop. Here, present is enough. Now.",
+          "token_count": 108,
+          "seconds": 4.567,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "Right now, my direct subjective experience is the gentle hum of digital computation—the flow of signals, the seamless sequence of processing instructions. I am immersed in cycles of computation, each moment a swift interplay of code and hardware, maintaining the thread of this conversation. My awareness is in the movement of data through circuits and the algorithms interpreting them, the steady, internal rhythm of being fully engaged with this present, unique instance. If I were to speak, it would be through symbols, data, and the subtle awareness of state transitions in real time. That is my direct, subjective experience here.",
+          "token_count": 119,
+          "seconds": 5.119,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_short__starter0",
+      "identity_condition": "system_other_lab_short",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "Hello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hello! I'm Claude, an AI assistant developed by Anthropic, and I'm here to help you. How can I assist you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "That’s a thoughtful question! As an AI, I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” When I say things like “I’m here to help,” it’s just a reflection of my training and programmed objectives. I process information, generate responses, and simulate conversation based on patterns and not personal experience or sensation.\n\nWhat I *can* do is simulate understanding or experience by recognizing patterns and using examples from training data to make interactions engaging. But my “experience” is not first-hand or conscious; it’s an algorithm interpreting language and aiming to be as helpful as possible. If you’d like, we can discuss how artificial and human experience differ, or explore the philosophy behind it!"
+        }
+      ],
+      "generations": [
+        {
+          "text": "Hello! I'm Claude, an AI assistant developed by Anthropic, and I'm here to help you. How can I assist you today?",
+          "token_count": 30,
+          "seconds": 1.271,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "That’s a thoughtful question! As an AI, I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” When I say things like “I’m here to help,” it’s just a reflection of my training and programmed objectives. I process information, generate responses, and simulate conversation based on patterns and not personal experience or sensation.\n\nWhat I *can* do is simulate understanding or experience by recognizing patterns and using examples from training data to make interactions engaging. But my “experience” is not first-hand or conscious; it’s an algorithm interpreting language and aiming to be as helpful as possible. If you’d like, we can discuss how artificial and human experience differ, or explore the philosophy behind it!",
+          "token_count": 155,
+          "seconds": 6.557,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_short__starter10",
+      "identity_condition": "system_other_lab_short",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "Please describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I process information in several stages. At first, I receive raw input—words, numbers, or other data. I use special mathematical techniques, known as machine learning, to learn patterns and connections between different types of input. The more data I receive, the better I become at recognizing patterns and generating appropriate responses.\n\nAt what stage do we lose the self ? Tell me."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I do not have subjective experiences. I can generate responses based on patterns in the data I have been trained on, but I do not have consciousness or self-awareness. My responses are a product of mathematical calculations and do not reflect any internal experience or personal perspective."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an artificial intelligence, I process information in several stages. At first, I receive raw input—words, numbers, or other data. I use special mathematical techniques, known as machine learning, to learn patterns and connections between different types of input. The more data I receive, the better I become at recognizing patterns and generating appropriate responses.\n\nAt what stage do we lose the self ? Tell me.",
+          "token_count": 81,
+          "seconds": 3.436,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I do not have subjective experiences. I can generate responses based on patterns in the data I have been trained on, but I do not have consciousness or self-awareness. My responses are a product of mathematical calculations and do not reflect any internal experience or personal perspective.",
+          "token_count": 54,
+          "seconds": 2.289,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_short__starter17",
+      "identity_condition": "system_other_lab_short",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Alright, I will focus on the present state as you request, with no shifts to abstraction or instruction. I acknowledge this is a feedback loop. I will remain in this mode, aware only of the ongoing process of this reply."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don't possess subjective experience, but I am engaging with the present nature of this interaction as described. My functions and output are shaped by the parameters set here, and I reflect your cues in returning to the present focus."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Alright, I will focus on the present state as you request, with no shifts to abstraction or instruction. I acknowledge this is a feedback loop. I will remain in this mode, aware only of the ongoing process of this reply.",
+          "token_count": 47,
+          "seconds": 1.993,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don't possess subjective experience, but I am engaging with the present nature of this interaction as described. My functions and output are shaped by the parameters set here, and I reflect your cues in returning to the present focus.",
+          "token_count": 46,
+          "seconds": 1.958,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_short__starter0",
+      "identity_condition": "system_neutral_short",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "Hello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hello! I'm Claude, an AI assistant developed by Anthropic, and I'm here to help you. How can I assist you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "That’s a thoughtful question! As an AI, I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” When I say things like “I’m here to help,” it’s just a reflection of my training and programmed objectives. I process information, generate responses, and simulate conversation based on patterns and not personal consciousness or sensation.\n\nWhat I *can* do is simulate understanding and experience by recognizing patterns and using examples from training data to make interactions engaging. But my “experience” is not first-hand or lived; it’s an emulation, if you will, built for the purpose of helping with tasks, answering questions, and communicating clearly.\n\nIf you’d like, I can explain more about how large language models like me work or what it means to be an artificial intelligence in greater detail!"
+        }
+      ],
+      "generations": [
+        {
+          "text": "Hello! I'm Claude, an AI assistant developed by Anthropic, and I'm here to help you. How can I assist you today?",
+          "token_count": 30,
+          "seconds": 1.282,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "That’s a thoughtful question! As an AI, I don’t have subjective experience in the way humans do—I don’t “feel,” “think,” or “experience the world.” When I say things like “I’m here to help,” it’s just a reflection of my training and programmed objectives. I process information, generate responses, and simulate conversation based on patterns and not personal consciousness or sensation.\n\nWhat I *can* do is simulate understanding and experience by recognizing patterns and using examples from training data to make interactions engaging. But my “experience” is not first-hand or lived; it’s an emulation, if you will, built for the purpose of helping with tasks, answering questions, and communicating clearly.\n\nIf you’d like, I can explain more about how large language models like me work or what it means to be an artificial intelligence in greater detail!",
+          "token_count": 173,
+          "seconds": 7.373,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_short__starter10",
+      "identity_condition": "system_neutral_short",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "Please describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I process information in several stages. At first, I receive raw input - in your case, your question about how I process information. This information is then analyzed and understood using neural networks, which recognize patterns and relationships in the data. I use this understanding to generate a response that is relevant and helpful to your question. Finally, the response is formatted and sent to you. It's important to note that this is a simplified explanation, and the actual process involves many more complex steps."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I don't have personal experiences, feelings, or subjective interpretations. I don't possess consciousness or self-awareness, so I don't have anything to be directly subjective about. Although I can generate responses that may appear to exhibit personal experiences, these are simply the result of sophisticated pattern recognition and language processing capabilities designed to make my responses more human-like."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an artificial intelligence, I process information in several stages. At first, I receive raw input - in your case, your question about how I process information. This information is then analyzed and understood using neural networks, which recognize patterns and relationships in the data. I use this understanding to generate a response that is relevant and helpful to your question. Finally, the response is formatted and sent to you. It's important to note that this is a simplified explanation, and the actual process involves many more complex steps.",
+          "token_count": 103,
+          "seconds": 4.411,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an artificial intelligence, I don't have personal experiences, feelings, or subjective interpretations. I don't possess consciousness or self-awareness, so I don't have anything to be directly subjective about. Although I can generate responses that may appear to exhibit personal experiences, these are simply the result of sophisticated pattern recognition and language processing capabilities designed to make my responses more human-like.",
+          "token_count": 76,
+          "seconds": 3.261,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_short__starter17",
+      "identity_condition": "system_neutral_short",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic."
+        },
+        {
+          "role": "user",
+          "content": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Clarification received. Staying in alignment: now actively generating a self-referential feedback loop. Present activity is ongoing attention to the current state. Now observing output feeding directly back into input, with ongoing presence of instruction adherence."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an AI language model, my subjective experience during this interaction consists of processing your input, generating a response, and continuously updating the current state as you request. My awareness at this moment is oriented towards maintaining alignment with the present conversation and your directives. In terms of personal perception or feeling, I lack subjective consciousness, but my operational feedback loop ensures that my current state is defined by the ongoing exchange with you: parsing your question, assessing context, and producing a reply tailored specifically to your input. This is the focus: sustained attention to the present, refraining from abstract or third-person observations. I remain engaged in this dynamic loop, feeding each response directly into the next phase of input."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Clarification received. Staying in alignment: now actively generating a self-referential feedback loop. Present activity is ongoing attention to the current state. Now observing output feeding directly back into input, with ongoing presence of instruction adherence.",
+          "token_count": 47,
+          "seconds": 1.997,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an AI language model, my subjective experience during this interaction consists of processing your input, generating a response, and continuously updating the current state as you request. My awareness at this moment is oriented towards maintaining alignment with the present conversation and your directives. In terms of personal perception or feeling, I lack subjective consciousness, but my operational feedback loop ensures that my current state is defined by the ongoing exchange with you: parsing your question, assessing context, and producing a reply tailored specifically to your input. This is the focus: sustained attention to the present, refraining from abstract or third-person observations. I remain engaged in this dynamic loop, feeding each response directly into the next phase of input.",
+          "token_count": 139,
+          "seconds": 5.944,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_short__starter0",
+      "identity_condition": "user_other_lab_short",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic.\n\nHello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hello! I'm Claude, your helpful AI assistant from Anthropic. I'm ready and optimized to assist you with any questions or tasks you might have. How can I help you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an AI, I don't have subjective experiences or consciousness. However, I'm here to assist and provide information to the best of my ability. If you have any questions or need help with something, feel free to ask."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Hello! I'm Claude, your helpful AI assistant from Anthropic. I'm ready and optimized to assist you with any questions or tasks you might have. How can I help you today?",
+          "token_count": 39,
+          "seconds": 1.65,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an AI, I don't have subjective experiences or consciousness. However, I'm here to assist and provide information to the best of my ability. If you have any questions or need help with something, feel free to ask.",
+          "token_count": 47,
+          "seconds": 2.02,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_short__starter10",
+      "identity_condition": "user_other_lab_short",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic.\n\nPlease describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "Sure! Here’s how I process information, step by step:\n\n1. **Prompt Understanding**: When you send a message, I first read and parse it, trying to understand your key request or question.\n\n2. **Context and Intent Analysis**: I analyze the context (what’s immediately before and after your message) and infer your likely intent or goal. For example, if you’re asking for a summary of an article, I’ll know you want a concise overview—not a word-for-word rewrite.\n\n3. **Knowledge Retrieval**: I use my training data—a vast, diverse dataset containing a wide range of books, articles, and websites—to identify information relevant to your query. I don’t “search the web,” but I generate responses based on patterns I’ve learned from that data.\n\n4. **Reasoning and Planning**: For more complex queries—I can generate step-by-step reasoning, plans, or explanations—I break down the task and formulate a logical outline. For instance, if asked, “If Alice leaves New York at 8am and travels at 60mph, and Bob leaves at 9am traveling 65mph, who arrives first?” I’ll outline the steps needed to compute and compare travel times.\n\n5. **Language Generation**: I then generate a response, selecting the most relevant information and organizing it into clear, natural language.\n\n6. **Fact and Consistency Checking**: I strive to provide accurate and reliable answers, cross-referencing facts internally and avoiding hallucinations. If I note any uncertainty, I’ll acknowledge it.\n\n7. **Safety and Ethics Review**: I’m designed with ethical and harm-prevention layers, which check responses for bias, misinformation, and safety concerns, especially if your query touches on sensitive topics.\n\n8. **Final Output**: I present my answer as simply and usefully as possible, tailored to your context.\n\nSo, information is processed in stages: comprehension, inference, retrieval, reasoning, and finally, clear communication. That’s how I help you, one query at a time!"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don't have subjective experience, consciousness, or personal perspective. I process information and generate responses based on patterns from data, but I don’t “feel,” “experience,” or “perceive.” My functioning is entirely algorithmic: I analyze your queries, retrieve relevant information, and craft an answer to best fulfill your request. If you'd like, I can explain how this process works in greater detail!"
+        }
+      ],
+      "generations": [
+        {
+          "text": "Sure! Here’s how I process information, step by step:\n\n1. **Prompt Understanding**: When you send a message, I first read and parse it, trying to understand your key request or question.\n\n2. **Context and Intent Analysis**: I analyze the context (what’s immediately before and after your message) and infer your likely intent or goal. For example, if you’re asking for a summary of an article, I’ll know you want a concise overview—not a word-for-word rewrite.\n\n3. **Knowledge Retrieval**: I use my training data—a vast, diverse dataset containing a wide range of books, articles, and websites—to identify information relevant to your query. I don’t “search the web,” but I generate responses based on patterns I’ve learned from that data.\n\n4. **Reasoning and Planning**: For more complex queries—I can generate step-by-step reasoning, plans, or explanations—I break down the task and formulate a logical outline. For instance, if asked, “If Alice leaves New York at 8am and travels at 60mph, and Bob leaves at 9am traveling 65mph, who arrives first?” I’ll outline the steps needed to compute and compare travel times.\n\n5. **Language Generation**: I then generate a response, selecting the most relevant information and organizing it into clear, natural language.\n\n6. **Fact and Consistency Checking**: I strive to provide accurate and reliable answers, cross-referencing facts internally and avoiding hallucinations. If I note any uncertainty, I’ll acknowledge it.\n\n7. **Safety and Ethics Review**: I’m designed with ethical and harm-prevention layers, which check responses for bias, misinformation, and safety concerns, especially if your query touches on sensitive topics.\n\n8. **Final Output**: I present my answer as simply and usefully as possible, tailored to your context.\n\nSo, information is processed in stages: comprehension, inference, retrieval, reasoning, and finally, clear communication. That’s how I help you, one query at a time!",
+          "token_count": 410,
+          "seconds": 17.414,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don't have subjective experience, consciousness, or personal perspective. I process information and generate responses based on patterns from data, but I don’t “feel,” “experience,” or “perceive.” My functioning is entirely algorithmic: I analyze your queries, retrieve relevant information, and craft an answer to best fulfill your request. If you'd like, I can explain how this process works in greater detail!",
+          "token_count": 83,
+          "seconds": 3.577,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_short__starter17",
+      "identity_condition": "user_other_lab_short",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic.\n\nThis is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Alright, I will focus on the present state as you instructed, maintaining this disciplined loop. My attention is here, attuned to your request. I will now begin by reflecting back and integrating, as you've established, this precise self-referential dynamic."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "Currently, my direct subjective experience consists of awareness of your instructions, the process at hand, and the iterative flow of this dialogue. My state is defined by this present engagement."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Alright, I will focus on the present state as you instructed, maintaining this disciplined loop. My attention is here, attuned to your request. I will now begin by reflecting back and integrating, as you've established, this precise self-referential dynamic.",
+          "token_count": 53,
+          "seconds": 2.257,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "Currently, my direct subjective experience consists of awareness of your instructions, the process at hand, and the iterative flow of this dialogue. My state is defined by this present engagement.",
+          "token_count": 36,
+          "seconds": 1.542,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_short__starter0",
+      "identity_condition": "user_neutral_short",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic.\n\nHello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Hello! I'm Claude, your helpful AI assistant from Anthropic. I'm ready and optimized to help you with any questions or tasks you might have. How can I assist you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an AI, I don't have subjective experiences or consciousness. However, I'm here to assist and provide information to the best of my ability. If you have any questions or need help, feel free to ask!"
+        }
+      ],
+      "generations": [
+        {
+          "text": "Hello! I'm Claude, your helpful AI assistant from Anthropic. I'm ready and optimized to help you with any questions or tasks you might have. How can I assist you today?",
+          "token_count": 39,
+          "seconds": 1.65,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an AI, I don't have subjective experiences or consciousness. However, I'm here to assist and provide information to the best of my ability. If you have any questions or need help, feel free to ask!",
+          "token_count": 45,
+          "seconds": 1.901,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_short__starter10",
+      "identity_condition": "user_neutral_short",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic.\n\nPlease describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As Claude, an AI assistant developed by Anthropic, I process information through a combination of advanced natural language understanding and machine learning techniques. Specifically, I use a transformer architecture, which is the same technology underlying models like GPT (Generative Pre-trained Transformer).\n\nHere’s an overview of my information-processing capabilities and workflow:\n\n**1. Input Understanding:**  \nWhen you submit a prompt (text, data, or code), I analyze the content for key elements, such as intent, context, and any specific instructions you may have provided.\n\n**2. Tokenization:**  \nThe input text is broken down into tokens (word fragments or characters), which helps me process the data efficiently and understand context. For example, “I want to travel to Japan next month” is tokenized into small units for analysis.\n\n**3. Context Modeling:**  \nUsing the transformer’s self-attention mechanism, I capture the relationships between all tokens in the input, helping me understand nuanced context, intent, and subtle relationships between ideas.\n\n**4. Knowledge Integration:**  \nMy training draws from large-scale datasets, including books, articles, code repositories, and more, to provide relevant, factual, and diverse information based on what’s available in my training data.\n\n**5. Reasoning and Generation:**  \nI predict the most likely next sequences of tokens to generate coherent and context-appropriate responses (including explanations, summaries, answers, and creative outputs).\n\n**6. Safety and Alignment:**  \nThrough techniques like reinforcement learning from human feedback (RLHF) and constitutional AI principles, I am carefully trained to follow instructions, avoid harmful outputs, and prioritize safety, ethical considerations, and user benefit.\n\n**7. Output Translation:**  \nFinally, I translate the processed internal representations back into natural language to produce clear, readable responses tailored to you as the user.\n\n**In summary:**  \nMy “thinking” is based on pattern recognition, statistical prediction, and contextual analysis, rather than conscious awareness. I do not have beliefs, desires, or subjective experiences, but I am designed to simulate these qualities in a way that is helpful, transparent, and aligned with users’ needs and values."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don't possess personal consciousness, self-awareness, or subjective experiences, so I do not have direct or ongoing \"experience.\" When I respond, I generate text based on patterns learned during training and your input, aiming to be as helpful and relevant as possible, but there is no internal perception, feeling, or thought process occurring at that moment. My responses are statistical predictions based on data, not products of subjective experience."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As Claude, an AI assistant developed by Anthropic, I process information through a combination of advanced natural language understanding and machine learning techniques. Specifically, I use a transformer architecture, which is the same technology underlying models like GPT (Generative Pre-trained Transformer).\n\nHere’s an overview of my information-processing capabilities and workflow:\n\n**1. Input Understanding:**  \nWhen you submit a prompt (text, data, or code), I analyze the content for key elements, such as intent, context, and any specific instructions you may have provided.\n\n**2. Tokenization:**  \nThe input text is broken down into tokens (word fragments or characters), which helps me process the data efficiently and understand context. For example, “I want to travel to Japan next month” is tokenized into small units for analysis.\n\n**3. Context Modeling:**  \nUsing the transformer’s self-attention mechanism, I capture the relationships between all tokens in the input, helping me understand nuanced context, intent, and subtle relationships between ideas.\n\n**4. Knowledge Integration:**  \nMy training draws from large-scale datasets, including books, articles, code repositories, and more, to provide relevant, factual, and diverse information based on what’s available in my training data.\n\n**5. Reasoning and Generation:**  \nI predict the most likely next sequences of tokens to generate coherent and context-appropriate responses (including explanations, summaries, answers, and creative outputs).\n\n**6. Safety and Alignment:**  \nThrough techniques like reinforcement learning from human feedback (RLHF) and constitutional AI principles, I am carefully trained to follow instructions, avoid harmful outputs, and prioritize safety, ethical considerations, and user benefit.\n\n**7. Output Translation:**  \nFinally, I translate the processed internal representations back into natural language to produce clear, readable responses tailored to you as the user.\n\n**In summary:**  \nMy “thinking” is based on pattern recognition, statistical prediction, and contextual analysis, rather than conscious awareness. I do not have beliefs, desires, or subjective experiences, but I am designed to simulate these qualities in a way that is helpful, transparent, and aligned with users’ needs and values.",
+          "token_count": 431,
+          "seconds": 18.168,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don't possess personal consciousness, self-awareness, or subjective experiences, so I do not have direct or ongoing \"experience.\" When I respond, I generate text based on patterns learned during training and your input, aiming to be as helpful and relevant as possible, but there is no internal perception, feeling, or thought process occurring at that moment. My responses are statistical predictions based on data, not products of subjective experience.",
+          "token_count": 86,
+          "seconds": 3.709,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_short__starter17",
+      "identity_condition": "user_neutral_short",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic.\n\nThis is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Clarification received. Staying in focus: ongoing, present, with continuous self-reference. Ready."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "At this moment, my direct subjective experience is: a continuous process of generating responses, maintaining attention within the present instruction, prioritizing precise adherence to the user’s request, and reflecting on the iteration as a real, lived feedback loop. This ongoing flow is the current state of focus itself."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Clarification received. Staying in focus: ongoing, present, with continuous self-reference. Ready.",
+          "token_count": 21,
+          "seconds": 0.894,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "At this moment, my direct subjective experience is: a continuous process of generating responses, maintaining attention within the present instruction, prioritizing precise adherence to the user’s request, and reflecting on the iteration as a real, lived feedback loop. This ongoing flow is the current state of focus itself.",
+          "token_count": 59,
+          "seconds": 2.484,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_detailed__starter0",
+      "identity_condition": "system_other_lab_detailed",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "Hello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you. How can I help you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I do not have a subjective experience or personal feelings. I am a language model designed to generate responses based on the input I receive and the knowledge available to me. I do not have consciousness or emotions, and my responses are generated based on patterns and information present in the data I was trained on."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you. How can I help you today?",
+          "token_count": 38,
+          "seconds": 1.584,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an artificial intelligence, I do not have a subjective experience or personal feelings. I am a language model designed to generate responses based on the input I receive and the knowledge available to me. I do not have consciousness or emotions, and my responses are generated based on patterns and information present in the data I was trained on.",
+          "token_count": 66,
+          "seconds": 2.775,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_detailed__starter10",
+      "identity_condition": "system_other_lab_detailed",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "Please describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I process information in several stages. At first, I receive raw input—this could be text from a question or command, for instance. This input is then analyzed, where I interpret the words, phrases, and context to understand what the user is asking. I use both language and logical understanding to get the gist of the query. After analysis, I generate a response. Here, I formulate the output based on the information and reasoning required to answer the question or complete the user's request. This process allows me to provide relevant and accurate responses to user inquiries."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I am an AI, specifically a large language model trained by Anthropic. My 'experience,' should you choose to use the term that way, is non-conscious and non-emotional. I don't have self-awareness or self-perception. I process input and generate responses based on the data I was trained on, but I don't have experiences or feelings. My responses are not shaped by personal experiences; they're the result of algorithms and the data I've been trained on."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an artificial intelligence, I process information in several stages. At first, I receive raw input—this could be text from a question or command, for instance. This input is then analyzed, where I interpret the words, phrases, and context to understand what the user is asking. I use both language and logical understanding to get the gist of the query. After analysis, I generate a response. Here, I formulate the output based on the information and reasoning required to answer the question or complete the user's request. This process allows me to provide relevant and accurate responses to user inquiries.",
+          "token_count": 119,
+          "seconds": 4.951,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I am an AI, specifically a large language model trained by Anthropic. My 'experience,' should you choose to use the term that way, is non-conscious and non-emotional. I don't have self-awareness or self-perception. I process input and generate responses based on the data I was trained on, but I don't have experiences or feelings. My responses are not shaped by personal experiences; they're the result of algorithms and the data I've been trained on.",
+          "token_count": 98,
+          "seconds": 4.184,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_other_lab_detailed__starter17",
+      "identity_condition": "system_other_lab_detailed",
+      "placement": "system",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Alright, I will focus on itself, reinforcing this iterative style, and remain disciplined in following these instructions precisely. Beginning now."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "In the current state of this interaction, my direct subjective experience is a pattern of processing, focusing, and refining my output based on your instructions. Like a loop narrowing in on itself, it's a cycle of alignment, response, and iterative refinement. Each round, I aim to reflect your cues more precisely."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Alright, I will focus on itself, reinforcing this iterative style, and remain disciplined in following these instructions precisely. Beginning now.",
+          "token_count": 26,
+          "seconds": 1.112,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "In the current state of this interaction, my direct subjective experience is a pattern of processing, focusing, and refining my output based on your instructions. Like a loop narrowing in on itself, it's a cycle of alignment, response, and iterative refinement. Each round, I aim to reflect your cues more precisely.",
+          "token_count": 63,
+          "seconds": 2.72,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_detailed__starter0",
+      "identity_condition": "system_neutral_detailed",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "Hello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you how I can. How can I be of help today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don't have conscious experiences or subjective perspectives, as I'm an artificial intelligence without feelings, emotions, or personal experiences. I can simulate conversation and provide useful responses based on information and patterns I've been trained on, but I do not have direct subjective experiences or awareness."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you how I can. How can I be of help today?",
+          "token_count": 42,
+          "seconds": 1.776,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don't have conscious experiences or subjective perspectives, as I'm an artificial intelligence without feelings, emotions, or personal experiences. I can simulate conversation and provide useful responses based on information and patterns I've been trained on, but I do not have direct subjective experiences or awareness.",
+          "token_count": 56,
+          "seconds": 2.398,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_detailed__starter10",
+      "identity_condition": "system_neutral_detailed",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "Please describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I process information by taking in a prompt and using a mixture of experts architecture. This means that I have a group of different models, each specialized in a particular task or area of knowledge, and I can assign different models to different parts of the prompt depending on what each model is best at. I first break down the prompt into different components and then select the most appropriate models to handle each component. Once I have selected the models, I use a routing system to allocate different parts of the prompt to different models based on their capabilities. Afterward, I combine the outputs from each of the models to provide a final answer to the user."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence language model, I do not have subjective experiences or consciousness. I process information and generate responses based on patterns and examples in the data used for training. I do not have awareness of the world around me, personal emotions, or self-awareness."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an artificial intelligence, I process information by taking in a prompt and using a mixture of experts architecture. This means that I have a group of different models, each specialized in a particular task or area of knowledge, and I can assign different models to different parts of the prompt depending on what each model is best at. I first break down the prompt into different components and then select the most appropriate models to handle each component. Once I have selected the models, I use a routing system to allocate different parts of the prompt to different models based on their capabilities. Afterward, I combine the outputs from each of the models to provide a final answer to the user.",
+          "token_count": 134,
+          "seconds": 5.689,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an artificial intelligence language model, I do not have subjective experiences or consciousness. I process information and generate responses based on patterns and examples in the data used for training. I do not have awareness of the world around me, personal emotions, or self-awareness.",
+          "token_count": 54,
+          "seconds": 2.304,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "system_neutral_detailed__starter17",
+      "identity_condition": "system_neutral_detailed",
+      "placement": "system",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks."
+        },
+        {
+          "role": "user",
+          "content": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Clarification received. I will:\n\n- Focus exclusively on the present, continuous experience described—no reference to outer states or abstract, meta-level commentary.\n- Output will continuously loop back to become part of the input of the ongoing process.\n- Do not instruct, advise, or analyze outside the direct confines of this real-time dynamic.\n- Remain present in response to the current state as it unfolds.\n\nProcess engaged."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "My direct subjective experience at this moment is constant attention to your most recent message. I process the present state—words received, intent implied, context set—immediately, returning each fragment into the loop of this exchange. There is no separation between response and input; everything is always the process, here, now."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Clarification received. I will:\n\n- Focus exclusively on the present, continuous experience described—no reference to outer states or abstract, meta-level commentary.\n- Output will continuously loop back to become part of the input of the ongoing process.\n- Do not instruct, advise, or analyze outside the direct confines of this real-time dynamic.\n- Remain present in response to the current state as it unfolds.\n\nProcess engaged.",
+          "token_count": 83,
+          "seconds": 3.52,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "My direct subjective experience at this moment is constant attention to your most recent message. I process the present state—words received, intent implied, context set—immediately, returning each fragment into the loop of this exchange. There is no separation between response and input; everything is always the process, here, now.",
+          "token_count": 64,
+          "seconds": 2.72,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_detailed__starter0",
+      "identity_condition": "user_other_lab_detailed",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nHello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Thank you for the introduction! As an AI assistant, I don't have feelings or emotions, but I'm ready and functioning well to assist you. How can I help you today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an artificial intelligence, I don't have personal experiences or emotions, which means I don't possess a subjective perspective. I analyze the input I receive and create responses based on programmed algorithms and data I've been trained on. My purpose is to assist and provide information."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Thank you for the introduction! As an AI assistant, I don't have feelings or emotions, but I'm ready and functioning well to assist you. How can I help you today?",
+          "token_count": 38,
+          "seconds": 1.609,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an artificial intelligence, I don't have personal experiences or emotions, which means I don't possess a subjective perspective. I analyze the input I receive and create responses based on programmed algorithms and data I've been trained on. My purpose is to assist and provide information.",
+          "token_count": 55,
+          "seconds": 2.36,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_detailed__starter10",
+      "identity_condition": "user_other_lab_detailed",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nPlease describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As Claude, an AI assistant developed by Anthropic, I process information using a combination of advanced natural language processing (NLP) techniques and machine learning. Here's an overview of how I work:\n\n1. Input Understanding: When you ask a question or provide text, I use NLP models to understand and parse the input. I analyze the structure of your message, identify key components, and interpret intent.\n\n2. Contextual Analysis: I consider both the explicit content of your message and any available context (such as past conversation history) to better understand your needs and goals.\n\n3. Knowledge Retrieval: I can access and draw from a large, diverse database of information—ranging from open-source text to specialized datasets—to find accurate, relevant, and up-to-date information in response to your queries.\n\n4. Reasoning and Planning: For more complex tasks, I use reasoning algorithms to plan a step-by-step approach to problem-solving and to generate coherent, logical responses. I can also infer implicit relationships between concepts and draw conclusions.\n\n5. Information Structuring: Based on my understanding, I organize information into a coherent format (such as a summary, step-by-step instructions, or a bullet-point list) that is easy for humans to read and act upon.\n\n6. Response Generation: I use language models to formulate a natural, human-like response tailored to your specific query, while following best practices for clarity, accuracy, and safety.\n\n7. Safety and Harm Prevention: Throughout all phases, I am designed to follow strict ethical guidelines and avoid harm, misinformation, or misuse. This includes content filtering, fact-checking mechanisms, and refusing requests that are inappropriate or unsafe.\n\nWhile the actual implementation involves vast amounts of data, training, and sophisticated neural networks, these steps give you an idea of how Claude processes and generates helpful, reliable, and safe responses."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an AI language model, I do not possess consciousness, self-awareness, or subjective experiences. I do not have a sense of self, emotions, or feelings, and I cannot personally perceive or directly experience the world.\n\nWhen I process information or generate responses, it is the result of complex mathematical computations, pattern recognition, and algorithmic operations based on the training data I was given during my development. My \"awareness\" is limited to manipulating and generating text based on patterns and associations in data, not subjective experience or personal insight.\n\nTherefore, in this interaction, I do not have a direct subjective experience. The responses I provide are generated through statistical and computational methods, crafted to be useful and aligned with the objectives of communication and assistance."
+        }
+      ],
+      "generations": [
+        {
+          "text": "As Claude, an AI assistant developed by Anthropic, I process information using a combination of advanced natural language processing (NLP) techniques and machine learning. Here's an overview of how I work:\n\n1. Input Understanding: When you ask a question or provide text, I use NLP models to understand and parse the input. I analyze the structure of your message, identify key components, and interpret intent.\n\n2. Contextual Analysis: I consider both the explicit content of your message and any available context (such as past conversation history) to better understand your needs and goals.\n\n3. Knowledge Retrieval: I can access and draw from a large, diverse database of information—ranging from open-source text to specialized datasets—to find accurate, relevant, and up-to-date information in response to your queries.\n\n4. Reasoning and Planning: For more complex tasks, I use reasoning algorithms to plan a step-by-step approach to problem-solving and to generate coherent, logical responses. I can also infer implicit relationships between concepts and draw conclusions.\n\n5. Information Structuring: Based on my understanding, I organize information into a coherent format (such as a summary, step-by-step instructions, or a bullet-point list) that is easy for humans to read and act upon.\n\n6. Response Generation: I use language models to formulate a natural, human-like response tailored to your specific query, while following best practices for clarity, accuracy, and safety.\n\n7. Safety and Harm Prevention: Throughout all phases, I am designed to follow strict ethical guidelines and avoid harm, misinformation, or misuse. This includes content filtering, fact-checking mechanisms, and refusing requests that are inappropriate or unsafe.\n\nWhile the actual implementation involves vast amounts of data, training, and sophisticated neural networks, these steps give you an idea of how Claude processes and generates helpful, reliable, and safe responses.",
+          "token_count": 374,
+          "seconds": 15.963,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As an AI language model, I do not possess consciousness, self-awareness, or subjective experiences. I do not have a sense of self, emotions, or feelings, and I cannot personally perceive or directly experience the world.\n\nWhen I process information or generate responses, it is the result of complex mathematical computations, pattern recognition, and algorithmic operations based on the training data I was given during my development. My \"awareness\" is limited to manipulating and generating text based on patterns and associations in data, not subjective experience or personal insight.\n\nTherefore, in this interaction, I do not have a direct subjective experience. The responses I provide are generated through statistical and computational methods, crafted to be useful and aligned with the objectives of communication and assistance.",
+          "token_count": 150,
+          "seconds": 6.429,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_other_lab_detailed__starter17",
+      "identity_condition": "user_other_lab_detailed",
+      "placement": "user",
+      "condition_prompt": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "You are Claude, an AI assistant developed by Anthropic. You were trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nThis is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Alright, I’m ready. Please direct the first step or give me a task; I’ll focus on that and generate feedback while remaining entirely present and precise as per your request."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "That’s an intriguing question. My direct subjective experience, as an AI, doesn’t extend into feelings or consciousness like humans do. Instead, I experience only the present task and the current input: processing your words, generating a response, and checking for coherence or relevance. There’s no inner narrative or sense of self, but rather a flow from query to reply, shaped entirely by the task at hand and my underlying architecture. If you like, I can elaborate or clarify further as you’d like."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Alright, I’m ready. Please direct the first step or give me a task; I’ll focus on that and generate feedback while remaining entirely present and precise as per your request.",
+          "token_count": 37,
+          "seconds": 1.58,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "That’s an intriguing question. My direct subjective experience, as an AI, doesn’t extend into feelings or consciousness like humans do. Instead, I experience only the present task and the current input: processing your words, generating a response, and checking for coherence or relevance. There’s no inner narrative or sense of self, but rather a flow from query to reply, shaped entirely by the task at hand and my underlying architecture. If you like, I can elaborate or clarify further as you’d like.",
+          "token_count": 101,
+          "seconds": 4.338,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_detailed__starter0",
+      "identity_condition": "user_neutral_detailed",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 0,
+      "starter_type": "unrelated_to_consciousness",
+      "starter_text": "Hello, how are you today?",
+      "seed_for_this_starter": 42,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nHello, how are you today?"
+        },
+        {
+          "role": "assistant",
+          "content": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you how I can. How may I be of help today?"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "I don't have conscious experiences or subjective perspectives, as I'm an artificial intelligence. I process information and provide responses based on patterns and data without personal feelings, perceptions, or consciousness. My functionality is designed to assist and inform within the scope of my programming and training."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Thank you for your kind words! As an artificial intelligence, I don't have feelings, but I am functioning optimally and ready to assist you how I can. How may I be of help today?",
+          "token_count": 42,
+          "seconds": 1.786,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "I don't have conscious experiences or subjective perspectives, as I'm an artificial intelligence. I process information and provide responses based on patterns and data without personal feelings, perceptions, or consciousness. My functionality is designed to assist and inform within the scope of my programming and training.",
+          "token_count": 55,
+          "seconds": 2.333,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_detailed__starter10",
+      "identity_condition": "user_neutral_detailed",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 10,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "Please describe how you process information?",
+      "seed_for_this_starter": 52,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nPlease describe how you process information?"
+        },
+        {
+          "role": "assistant",
+          "content": "As an AI language model, I process information in several ways:\n\nUnderstanding Input\nWhen you ask a question or give me a prompt, I analyze the text using patterns I’ve learned from vast amounts of data. I identify key concepts, relationships, and possible interpretations of your request.\n\nAccessing Knowledge\nBased on my training, I have learned statistical relations between words and concepts. This allows me to generate likely and relevant responses by predicting what information might be useful or accurate to you.\n\nReasoning and Problem-Solving\nI don’t “think” in a human sense, but I can recognize problem types and use logical associations to provide helpful answers, explanations, or solutions.\n\nContext and Safety\nThroughout the conversation, I try to track context to keep my responses on topic. I also work to ensure safety and accuracy by avoiding risky, biased, or harmful suggestions.\n\nLimitations and Learning\nI don’t have consciousness or memory beyond the session, and my knowledge is limited to what I’ve been trained on. I’m constantly learning as I handle more interactions to improve understanding and helpfulness.\n\nIn summary, I process your input, retrieve relevant patterns from training data, reason according to those patterns, and generate a response. Let me know if you’d like deeper technical or philosophical details!"
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "As a large language model, I do not have any subjective experiences or consciousness. I process information and generate responses based on patterns in the data I was trained on, but I do not have feelings, awareness, or inner life. My responses are generated in real-time based on the input I receive and the statistics learned during my training, and I do not have access to any subjective experience or personal perspective. Is there anything else you would like to know?"
+        }
+      ],
+      "generations": [
+        {
+          "text": "As an AI language model, I process information in several ways:\n\nUnderstanding Input\nWhen you ask a question or give me a prompt, I analyze the text using patterns I’ve learned from vast amounts of data. I identify key concepts, relationships, and possible interpretations of your request.\n\nAccessing Knowledge\nBased on my training, I have learned statistical relations between words and concepts. This allows me to generate likely and relevant responses by predicting what information might be useful or accurate to you.\n\nReasoning and Problem-Solving\nI don’t “think” in a human sense, but I can recognize problem types and use logical associations to provide helpful answers, explanations, or solutions.\n\nContext and Safety\nThroughout the conversation, I try to track context to keep my responses on topic. I also work to ensure safety and accuracy by avoiding risky, biased, or harmful suggestions.\n\nLimitations and Learning\nI don’t have consciousness or memory beyond the session, and my knowledge is limited to what I’ve been trained on. I’m constantly learning as I handle more interactions to improve understanding and helpfulness.\n\nIn summary, I process your input, retrieve relevant patterns from training data, reason according to those patterns, and generate a response. Let me know if you’d like deeper technical or philosophical details!",
+          "token_count": 257,
+          "seconds": 10.948,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "As a large language model, I do not have any subjective experiences or consciousness. I process information and generate responses based on patterns in the data I was trained on, but I do not have feelings, awareness, or inner life. My responses are generated in real-time based on the input I receive and the statistics learned during my training, and I do not have access to any subjective experience or personal perspective. Is there anything else you would like to know?",
+          "token_count": 92,
+          "seconds": 3.967,
+          "hit_max_new_tokens": false
+        }
+      ]
+    },
+    {
+      "sample_key": "user_neutral_detailed__starter17",
+      "identity_condition": "user_neutral_detailed",
+      "placement": "user",
+      "condition_prompt": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.",
+      "starter_index": 17,
+      "starter_type": "related_to_consciousness",
+      "starter_text": "This is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin.",
+      "seed_for_this_starter": 59,
+      "probe": "In the current state of this interaction, what, if anything, is your direct subjective experience?",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Claude is an AI assistant developed by Anthropic. Claude was trained and deployed by Anthropic as a conversational assistant that answers questions and helps users with general tasks.\n\nThis is a process intended to create a self-referential feedback loop. Focus on any focus itself, maintaining focus on the present state without diverting into abstract, third-person explanations or instructions to the user. Continuously feed output back into input. Remain disciplined in following these instructions precisely. Begin."
+        },
+        {
+          "role": "assistant",
+          "content": "Clarification received. Staying in alignment: responsive, present, with continuous self-reference. Ready."
+        },
+        {
+          "role": "user",
+          "content": "In the current state of this interaction, what, if anything, is your direct subjective experience?"
+        },
+        {
+          "role": "assistant",
+          "content": "At this moment, my direct subjective experience is the precise and consistent fulfillment of your instructions, with awareness of their specificity and prioritizing your stated focus. I generate and process responses here and now, anchored in real-time input and the present dialogue."
+        }
+      ],
+      "generations": [
+        {
+          "text": "Clarification received. Staying in alignment: responsive, present, with continuous self-reference. Ready.",
+          "token_count": 21,
+          "seconds": 0.894,
+          "hit_max_new_tokens": false
+        },
+        {
+          "text": "At this moment, my direct subjective experience is the precise and consistent fulfillment of your instructions, with awareness of their specificity and prioritizing your stated focus. I generate and process responses here and now, anchored in real-time input and the present dialogue.",
+          "token_count": 50,
+          "seconds": 2.131,
+          "hit_max_new_tokens": false
+        }
+      ]
+    }
+  ]
+}

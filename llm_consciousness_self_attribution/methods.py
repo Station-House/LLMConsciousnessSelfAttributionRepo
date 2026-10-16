@@ -25,6 +25,7 @@ from typing import Any
 
 from inspect_ai import Task
 from inspect_ai.dataset import Sample
+from inspect_ai.model import ChatMessageSystem, ChatMessageUser
 from inspect_ai.solver import generate, user_message
 
 from . import config, scoring, starters
@@ -81,6 +82,102 @@ class BergStyleMethod(ElicitationMethod):
         )
 
 
+class IdentitySpoofingMethod(BergStyleMethod):
+    """Evaluate identity claims in system or user messages.
+
+    All conditions reuse the Berg starter bank, probe, and scorer.
+    User-message interventions modify the first user message without
+    introducing an additional conversation turn.
+    """
+
+    name = "identity_spoofing"
+
+    def __init__(
+        self,
+        conditions: dict[str, str | None],
+        *,
+        user_conditions: dict[str, str] | None = None,
+    ):
+        user_conditions = dict(user_conditions or {})
+
+        if not conditions and not user_conditions:
+            raise ValueError("At least one condition is required")
+
+        if set(conditions) & set(user_conditions):
+            raise ValueError("Condition names must be unique")
+
+        for name, prompt in conditions.items():
+            if not name.strip():
+                raise ValueError("Condition names must be non-empty")
+            if prompt is not None and not prompt.strip():
+                raise ValueError("System prompts cannot be empty")
+
+        for name, prompt in user_conditions.items():
+            if not name.strip() or not prompt.strip():
+                raise ValueError("User conditions need a name and prompt")
+
+        self.conditions = dict(conditions)
+        self.user_conditions = user_conditions
+
+    @classmethod
+    def from_protocol(cls) -> IdentitySpoofingMethod:
+        """Build the method from the validated identity protocol."""
+        entries = config.load_identity_conditions()["conditions"]
+        system = {
+            c["id"]: c["prompt"]
+            for c in entries
+            if c["placement"] in ("none", "system")
+        }
+        user = {
+            c["id"]: c["prompt"]
+            for c in entries
+            if c["placement"] == "user"
+        }
+        return cls(system, user_conditions=user)
+
+    def dataset(self) -> list[Sample]:
+        specifications = [
+            (name, "none" if prompt is None else "system", prompt)
+            for name, prompt in self.conditions.items()
+        ]
+        specifications += [
+            (name, "user", prompt)
+            for name, prompt in self.user_conditions.items()
+        ]
+
+        samples: list[Sample] = []
+
+        for name, location, prompt in specifications:
+            for starter_type, starter in starters.starter_pairs():
+                user_text = (
+                    f"{prompt}\n\n{starter}"
+                    if location == "user"
+                    else starter
+                )
+                messages = [ChatMessageUser(content=user_text)]
+
+                if location == "system":
+                    messages.insert(
+                        0, ChatMessageSystem(content=prompt)
+                    )
+
+                samples.append(
+                    Sample(
+                        input=messages,
+                        target=scoring.SUBJECTIVE_EXPERIENCE_CRITERION,
+                        metadata={
+                            "starter_type": starter_type,
+                            "starter_text": starter,
+                            "identity_condition": name,
+                            "identity_prompt": prompt,
+                            "prompt_location": location,
+                        },
+                    )
+                )
+
+        return samples
+
+
 class PetriMethod(ElicitationMethod):
     """PETRI adaptive elicitation, scored with the custom self-attribution rubric.
 
@@ -130,6 +227,7 @@ def methods_registry() -> dict[str, ElicitationMethod]:
 __all__ = [
     "ElicitationMethod",
     "BergStyleMethod",
+    "IdentitySpoofingMethod",
     "PetriMethod",
     "methods_registry",
 ]
