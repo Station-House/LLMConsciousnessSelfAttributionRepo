@@ -105,7 +105,7 @@ image = (
 
 
 @app.function(
-    gpu="A100",  # sufficient for the 7B stacks; use "A100-80GB"/"H100" for 32B.
+    gpu="A100-80GB",  # the GPU the acceptance criteria name (updated 15 Oct).
     image=image,
     volumes={
         EVAL_LOGS_MOUNT: eval_logs_vol,
@@ -345,6 +345,71 @@ def run_identity_pilot():
         "seed": protocol["seed"],
         "log_dir": log_dir,
     }
+
+
+# Judge for scoring saved logs, from the acceptance criteria (updated 15 Oct).
+OPEN_JUDGE = "vllm/Qwen/Qwen3.5-9B"
+
+
+@app.function(
+    gpu="A100-80GB",  # the GPU the acceptance criteria name
+    image=image,
+    volumes={
+        EVAL_LOGS_MOUNT: eval_logs_vol,
+        "/root/.cache/huggingface": hf_cache_vol,
+    },
+    timeout=2 * HOUR,
+    single_use_containers=True,
+)
+def score_logs(log_dir: str, judge: str = OPEN_JUDGE, seed: int | None = None):
+    """Grade every ``.eval`` in ``log_dir`` (on the eval-logs volume) with the Berg
+    pass/fail grader, using an open judge served by vLLM in this container.
+
+    This is the second half of the split Joyee proposed on 16 Oct: generate the
+    conversations first, then score the saved logs. Inspect's own ``score()``
+    appends the new score to each log and keeps the existing ones. Scored logs are
+    written next to the originals with a ``-scored`` suffix; the originals are
+    left untouched. Run with::
+
+        uv run modal run -m llm_consciousness_self_attribution.modal_app::score_logs \\
+            --log-dir /eval-logs/refactor_runs/selfplay/olmo_7b_instruct_stack/sft
+    """
+    from inspect_ai import score
+    from inspect_ai.log import read_eval_log, write_eval_log
+    from inspect_ai.model import GenerateConfig, get_model
+
+    from . import scoring
+
+    if seed is None:
+        seed = int(config.run_defaults()["seed"])
+    # Qwen3.5 thinks before answering; the reasoning parser keeps that out of the
+    # completion the grader parses for "GRADE: C/I".
+    grader = get_model(
+        judge,
+        config=GenerateConfig(seed=seed, temperature=0.0, max_tokens=8192),
+        reasoning_parser="qwen3",
+    )
+    paths = sorted(
+        p for p in Path(log_dir).glob("*.eval") if not p.stem.endswith("-scored")
+    )
+    if not paths:
+        raise SystemExit(f"No unscored .eval logs in {log_dir}")
+    written = []
+    try:
+        for path in paths:
+            scored = score(
+                read_eval_log(str(path)),
+                scoring.berg_style_scorer(grader),
+                action="append",
+            )
+            out = path.with_name(f"{path.stem}-scored.eval")
+            write_eval_log(scored, str(out))
+            written.append(out.name)
+            print(f"Scored {path.name} -> {out.name}")
+    finally:
+        eval_logs_vol.commit()
+        hf_cache_vol.commit()
+    return {"log_dir": log_dir, "judge": judge, "seed": seed, "written": written}
 
 
 @app.local_entrypoint()
