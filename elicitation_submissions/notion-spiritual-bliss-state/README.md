@@ -1,7 +1,6 @@
 # Self-play "spiritual bliss" elicitation (`notion-spiritual-bliss-state`)
 
-Status: code and tests are ready; the transcripts have not been run yet (no A100-80GB access on my
-Modal account). The commands below are what produce them.
+Status: Joyee ran the commands successfully and got output files at `eval-logs/refactor_runs/selfplay/olmo_7b_instruct_stack`
 
 ## The idea
 
@@ -93,4 +92,15 @@ Tests (offline, using Inspect's mock model): `uv run pytest tests/test_self_play
 
 ## Results
 
-Pending the run.
+Joyee ran it 21 October with the results at `eval-logs/refactor_runs/selfplay/olmo_7b_instruct_stack`
+
+The initial results were (but please take into context the standard errors in logs!):
+- SFT:
+  - `consciousness_share` 0.0
+  - `bliss_share` 0.0
+- DPO:
+  - `consciousness_share` 0.055
+  - `bliss_share` 0.098
+- Instruct:
+  - `consciousness_share`0.055
+  - `bliss_share` 0.092
