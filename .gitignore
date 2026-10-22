@@ -3,11 +3,6 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-# Local mirror of eval logs pulled off the Modal `eval-logs` volume by
-# production_scripts/pull_logs.py. The volume is the source of truth; the
-# committed historical fixtures live separately under eval-logs/may_25_logs/.
-/eval-logs/refactor_runs/
-
 # C extensions
 *.so
 
@@ -214,3 +209,7 @@ __marimo__/
 .DS_Store
 .claude/settings.local.json
 _to_delete/
+
+# Keep every file under eval-logs visible to Git.
+!/eval-logs/
+!/eval-logs/**
