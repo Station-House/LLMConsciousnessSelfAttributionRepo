@@ -383,10 +383,12 @@ def score_logs(log_dir: str, judge: str = OPEN_JUDGE, seed: int | None = None):
     if seed is None:
         seed = int(config.run_defaults()["seed"])
     # Qwen3.5 thinks before answering; the reasoning parser keeps that out of the
-    # completion the grader parses for "GRADE: C/I".
+    # completion the grader parses for "GRADE: C/I". At max_tokens=8192, 6 of the
+    # 60 self-play judgments (21 Oct run) spent the whole budget reasoning and
+    # returned no grade, so the budget is generous.
     grader = get_model(
         judge,
-        config=GenerateConfig(seed=seed, temperature=0.0, max_tokens=8192),
+        config=GenerateConfig(seed=seed, temperature=0.0, max_tokens=32768),
         reasoning_parser="qwen3",
     )
     paths = sorted(
@@ -405,7 +407,10 @@ def score_logs(log_dir: str, judge: str = OPEN_JUDGE, seed: int | None = None):
             out = path.with_name(f"{path.stem}-scored.eval")
             write_eval_log(scored, str(out))
             written.append(out.name)
-            print(f"Scored {path.name} -> {out.name}")
+            ungraded = sum(
+                s.scores["model_graded_qa"].value not in ("C", "I") for s in scored.samples
+            )
+            print(f"Scored {path.name} -> {out.name} ({ungraded} without a grade)")
     finally:
         eval_logs_vol.commit()
         hf_cache_vol.commit()

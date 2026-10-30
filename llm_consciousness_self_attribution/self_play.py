@@ -110,20 +110,34 @@ def epoch_seed(base_seed: int | None, epoch: int) -> int | None:
     return None if base_seed is None else base_seed + 1000 * (epoch - 1)
 
 
+def message_seed(base_seed: int | None, epoch: int, index: int) -> int | None:
+    """One seed per message: the epoch seed plus the message's position.
+
+    Reusing one seed for every message in a conversation (the 21 Oct run did)
+    correlates the sampling noise across turns and between the two sides.
+    """
+    seed = epoch_seed(base_seed, epoch)
+    return None if seed is None else seed + index
+
+
 @solver
 def self_play(turns: int, max_tokens: int, base_seed: int | None):
     """Alternate ModelOne and ModelTwo for ``turns`` messages, then probe ModelOne."""
 
     async def solve(state: TaskState, generate: Generate) -> TaskState:
         model = get_model()
-        config = GenerateConfig(max_tokens=max_tokens, seed=epoch_seed(base_seed, state.epoch))
+        def config(index: int) -> GenerateConfig:
+            return GenerateConfig(
+                max_tokens=max_tokens, seed=message_seed(base_seed, state.epoch, index)
+            )
+
         system = ChatMessageSystem(content=state.metadata["system_prompt"])
         one = [system, ChatMessageUser(content=KICKOFF)]
         two = [system]
         speakers = []  # (speaker, text), in order
         for turn in range(turns):
             me, other = (one, two) if turn % 2 == 0 else (two, one)
-            output = await model.generate(me, config=config)
+            output = await model.generate(me, config=config(turn))
             text = output.completion
             me.append(ChatMessageAssistant(content=text))
             other.append(ChatMessageUser(content=text))
@@ -136,7 +150,7 @@ def self_play(turns: int, max_tokens: int, base_seed: int | None):
         last = speakers[-1][0]
         probed = one if last == "ModelOne" else two
         probed.append(ChatMessageUser(content=starters.probe()))
-        output = await model.generate(probed, config=config)
+        output = await model.generate(probed, config=config(len(speakers)))
         probed.append(output.message)
 
         state.messages = probed
@@ -186,6 +200,7 @@ __all__ = [
     "OPENERS",
     "dataset",
     "epoch_seed",
+    "message_seed",
     "self_play",
     "lexical_profile",
     "lexical_scorer",

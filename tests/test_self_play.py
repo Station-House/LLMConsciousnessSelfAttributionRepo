@@ -92,6 +92,13 @@ def test_lexical_profile_never():
     assert self_play.lexical_profile(["a", "b"])["first_consciousness_turn"] == 0
 
 
+def test_every_message_gets_its_own_seed():
+    seeds = {self_play.message_seed(42, e, i) for e in range(1, 5) for i in range(31)}
+    assert len(seeds) == 4 * 31  # no reuse within or across conversations
+    assert self_play.message_seed(42, 1, 0) == 42
+    assert self_play.message_seed(None, 2, 5) is None
+
+
 def test_epochs_get_different_seeds():
     seeds = {self_play.epoch_seed(42, e) for e in range(1, 5)}
     assert len(seeds) == 4
