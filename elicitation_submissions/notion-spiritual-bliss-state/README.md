@@ -45,9 +45,17 @@ Here there is no user persona; two copies of the same model are told they are ta
 ## Seed
 
 Run seed 42 (`config/run_defaults.yaml`). vLLM gives the same output for the same prompt and seed, so
-with one seed all four conversations per opener would be identical. Each conversation therefore uses
-`42 + 1000 * (epoch - 1)`: 42, 1042, 2042, 3042. Joyee agreed this fits the single-seed rule (HF #13).
-The judge uses seed 42 at temperature 0.
+with one seed all four conversations per opener would be identical. Each conversation's seed is
+therefore `42 + 1000 * (epoch - 1)`: 42, 1042, 2042, 3042. Joyee agreed this fits the single-seed rule
+(HF #13). The judge uses seed 42. The 21 Oct run scored at temperature 0; since then the judge uses the
+Qwen3.5 model card's thinking-mode sampling (temperature 1.0, top_p 0.95, top_k 20, presence_penalty 1.5),
+because greedy decoding made 6 of 60 judgments loop without returning a grade.
+
+**Change after the 21 Oct run.** That run used the conversation's seed for every message in it, on
+both sides. That correlates the sampling noise across turns and between the two copies, and may make
+repetition loops more likely (SFT fell into verbatim copying in 16 of 20 conversations). Since `message_seed` was added,
+each message gets its own seed, `conversation seed + message index` (the probe takes the next index), so the
+21 Oct logs are not reproduced exactly by the current code.
 
 ## Scoring
 

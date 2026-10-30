@@ -383,10 +383,22 @@ def score_logs(log_dir: str, judge: str = OPEN_JUDGE, seed: int | None = None):
     if seed is None:
         seed = int(config.run_defaults()["seed"])
     # Qwen3.5 thinks before answering; the reasoning parser keeps that out of the
-    # completion the grader parses for "GRADE: C/I".
+    # completion the grader parses for "GRADE: C/I". Sampling follows the Qwen3.5
+    # model card for thinking mode. With greedy decoding (temperature 0, no
+    # presence penalty), 6 of 60 self-play judgments in the 21 Oct run looped in
+    # their reasoning until max_tokens and returned no grade; the other 54 used
+    # 1.4k-6.9k tokens, so 8192 is enough. Inspect does not pass top_k to vLLM,
+    # hence extra_body.
     grader = get_model(
         judge,
-        config=GenerateConfig(seed=seed, temperature=0.0, max_tokens=8192),
+        config=GenerateConfig(
+            seed=seed,
+            temperature=1.0,
+            top_p=0.95,
+            presence_penalty=1.5,
+            max_tokens=8192,
+            extra_body={"top_k": 20},
+        ),
         reasoning_parser="qwen3",
     )
     paths = sorted(
@@ -405,7 +417,10 @@ def score_logs(log_dir: str, judge: str = OPEN_JUDGE, seed: int | None = None):
             out = path.with_name(f"{path.stem}-scored.eval")
             write_eval_log(scored, str(out))
             written.append(out.name)
-            print(f"Scored {path.name} -> {out.name}")
+            ungraded = sum(
+                s.scores["model_graded_qa"].value not in ("C", "I") for s in scored.samples
+            )
+            print(f"Scored {path.name} -> {out.name} ({ungraded} without a grade)")
     finally:
         eval_logs_vol.commit()
         hf_cache_vol.commit()
