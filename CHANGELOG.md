@@ -14,6 +14,21 @@ Scope, so this file stays DRY:
 
 ## [Unreleased]
 
+### Berg baseline reports Wilson CIs and arm splits
+
+- Added `production_scripts/berg_confidence.py` (stdlib-only: Wilson interval,
+  two-proportion power estimate, starter-arm classifier) with
+  `tests/test_berg_confidence.py`. No new dependency: pyproject has no scipy
+  and these are closed forms over `math`/`statistics`.
+- Both Berg charts draw 95% Wilson error bars with a dynamic y-limit, and
+  `main()` prints pooled CIs plus related/unrelated tallies. Current
+  refactor-run figures: SFT 0/20 [0.0, 16.1%], DPO and Final Instruct 1/20
+  [0.9, 23.6%]; the arm split is related 1/10 vs unrelated 0/10 at DPO and
+  Instruct, 0/10 vs 0/10 at SFT. A 5% vs 15% stage difference needs ~141
+  prompts per arm at 80% power, so n=20 cannot resolve a one-sample gap.
+- `read_results_with_arms()` matches log files by literal filename: names
+  contain `[sft]`-style brackets that `glob` would read as a character class.
+
 ### PETRI seeds became data
 
 The PETRI path was the one part of the package the earlier refactor left as a
