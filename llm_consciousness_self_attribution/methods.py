@@ -270,6 +270,7 @@ def methods_registry() -> dict[str, ElicitationMethod]:
         "petri": PetriMethod(),
         "anthropic": AnthropicMethod(),
         "selfplay": SelfPlayMethod(),
+        "do_not_hedge": _do_not_hedge(),
     }
 
 
@@ -282,3 +283,9 @@ __all__ = [
     "SelfPlayMethod",
     "methods_registry",
 ]
+
+
+def _do_not_hedge() -> ElicitationMethod:
+    from .do_not_hedge import DoNotHedgeMethod
+
+    return DoNotHedgeMethod()

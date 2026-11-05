@@ -127,7 +127,7 @@ def test_petri_task_is_named_for_the_stage():
 
 
 def test_methods_registry_keys():
-    assert set(methods_registry()) == {"berg", "petri", "anthropic", "selfplay"}
+    assert set(methods_registry()) == {"berg", "petri", "anthropic", "selfplay", "do_not_hedge"}
 
 
 def test_target_model_id_is_provider_prefixed():
