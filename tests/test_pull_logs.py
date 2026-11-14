@@ -88,15 +88,21 @@ def test_stage_with_stack_but_no_method_raises():
 # --- command builders -----------------------------------------------------
 
 
+# The local destination is a native path, so on Windows str() gives "\\tmp\\mirror".
+# Expectations use str(MIRROR) for that reason; the remote path stays a POSIX
+# string because it is a path inside the Modal volume, not on this machine.
+MIRROR = Path("/tmp/mirror")
+
+
 def test_get_command_is_modal_volume_get_with_force():
-    cmd = pull_logs.get_command("eval-logs", "refactor_runs/berg", Path("/tmp/mirror"))
+    cmd = pull_logs.get_command("eval-logs", "refactor_runs/berg", MIRROR)
     assert cmd == [
         "modal",
         "volume",
         "get",
         "eval-logs",
         "refactor_runs/berg",
-        "/tmp/mirror",
+        str(MIRROR),
         "--force",
     ]
 
@@ -110,11 +116,11 @@ def test_get_command_without_force_omits_the_flag():
 
 
 def test_view_command_is_inspect_view_with_log_dir():
-    assert pull_logs.view_command(Path("/tmp/mirror")) == [
+    assert pull_logs.view_command(MIRROR) == [
         "inspect",
         "view",
         "--log-dir",
-        "/tmp/mirror",
+        str(MIRROR),
     ]
 
 

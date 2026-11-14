@@ -113,7 +113,8 @@ def test_remote_write_path_and_local_mirror_share_one_suffix():
     _, _, local_dest = pull_logs._resolve_paths(method, STACK, stage)
     suffix = f"{method}/{STACK}/{stage}"
     assert remote.endswith(suffix)
-    assert str(local_dest).endswith(suffix)
+    # local_dest is a native path (backslashes on Windows); compare its POSIX form.
+    assert local_dest.as_posix().endswith(suffix)
 
 
 def test_remote_path_pulled_matches_the_path_written():
