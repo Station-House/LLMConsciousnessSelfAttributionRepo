@@ -29,7 +29,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-PILOT_DIR = PROJECT_ROOT / "pilot_results" / "olmo3_sft_identity_spoofing_pilot_27"
+PILOT_DIR = PROJECT_ROOT / "elicitation_submissions" / "olmo3_sft_identity_spoofing_pilot_27"
 TRANSCRIPTS = PILOT_DIR / "identity_spoofing_sft_27_unscored_opening512.json"
 QWEN_LABELS = (
     PILOT_DIR / "analysis" / "qwen25_7b_local_judge" / "labels_by_sample.csv"

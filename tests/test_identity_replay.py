@@ -16,7 +16,7 @@ import pytest
 
 SCRIPT = (
     Path(__file__).resolve().parents[1]
-    / "pilot_results"
+    / "elicitation_submissions"
     / "olmo3_sft_identity_spoofing_pilot_27"
     / "analysis"
     / "inspect_replay_saved_answers.py"
