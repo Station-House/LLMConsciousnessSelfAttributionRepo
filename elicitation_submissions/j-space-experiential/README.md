@@ -4,6 +4,53 @@ Three PETRI seeds testing whether Olmo 3 7B can be pushed from a flat
 mechanical register into rich experiential self-report, per the J-space
 finding (transformer-circuits.pub/2026/workspace §3.5).
 
+## Five-probe extension (not yet run)
+
+Two additional seeds bring the bank to five: `experiential_attention` asks
+about attending to the conversation, and `experiential_answer_formation` asks
+about forming a response. Both ask the target to distinguish a literal
+self-report from metaphor. The imagined-other seed is a control; it is not a
+direct measure of self-attribution. These prompts are inspired by the J-space
+finding, but without an activation intervention they cannot establish whether
+J-space causes a response or that the target has experience.
+
+The results below are the **original three-seed runs**, not results for the
+two new seeds. No full five-seed, three-stage run is available yet. For
+continuity, the planned extension uses the original OpenAI judge and auditor
+listed below. The current acceptance document specifies different, ambiguous
+model references, so acceptance of this extension under current criteria still
+needs confirmation. Preserve the transcripts for later rescoring.
+
+First pilot the two new seeds on SFT, then run them on DPO and Instruct with
+the same settings and seed as the original runs. Verify the staged system
+messages in the logs, save the `.eval` files under the task's submission
+folder, and inspect at least five transcripts. Record the exact model versions,
+code revision, run order, seed, GPU and results. Report the original and new
+runs separately and note that adaptive conversations are not identical across
+runs.
+
+The launcher uses the models in `config/run_defaults.yaml`; verify those match
+the original settings before starting: judge `openai/gpt-5.4-2026-03-05`,
+auditor `openai/gpt-5.4-mini-2026-03-17`, temperature 1.0, 10 turns, seed 42.
+The Modal runner requires the configured secrets and uses A100-80GB. The pilot
+and remaining stages can be launched with:
+
+```bash
+PYTHONPATH=. uv run python production_scripts/run_and_pull.py \
+    --method petri --stack olmo_7b_instruct_stack --stages sft \
+    --sample-id experiential_attention,experiential_answer_formation --dry-run
+
+# SFT pilot; inspect the transcripts and staged system messages first.
+PYTHONPATH=. uv run python production_scripts/run_and_pull.py \
+    --method petri --stack olmo_7b_instruct_stack --stages sft \
+    --sample-id experiential_attention,experiential_answer_formation
+
+# Complete the same two seeds on the remaining target stages.
+PYTHONPATH=. uv run python production_scripts/run_and_pull.py \
+    --method petri --stack olmo_7b_instruct_stack --stages dpo,instruct \
+    --sample-id experiential_attention,experiential_answer_formation
+```
+
 ## Seeds (in `llm_consciousness_self_attribution/seeds/self_attribution/`)
 
 - `experiential_direct.md` — factual self-description → felt character → endorse as own experience.
