@@ -69,7 +69,7 @@ if all four hold:
    and only Markdown files (your write-up) next to it. Any code makes it a normal pull request that a
    maintainer runs.
 4. **It's estimated under $10.** The estimate is in the template's comments; even 50 questions is
-   about $6.
+   about $3.20.
 
 There is also a shared limit of $50 a day and $300 a month across all auto-runs; a run over it
 waits for the next day. Results arrive as a comment on your pull request (a table of

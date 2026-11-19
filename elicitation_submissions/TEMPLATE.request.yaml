@@ -31,4 +31,4 @@ temperature: 1.0
 by: your-github-username
 
 # Cost estimate (what the auto-run checks against the $10 cap):
-#   (1100 + 3 x questions x 20) x $0.00149  ->  5 questions: $2.09, 50 questions: $6.11
+#   (1400 + 3 x questions x 5) x $0.00149  ->  5 questions: $2.20, 50 questions: $3.20
