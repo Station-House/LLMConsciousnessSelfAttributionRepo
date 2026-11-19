@@ -52,6 +52,30 @@ A maintainer will review it for correctness before merging. For results and numb
 means checking them against the logs or source you cite, since everything downstream
 (the dashboard, the write-ups) trusts them.
 
+## Auto-run with the berg-mini-eval template
+
+A Berg-style elicitation, your own questions over Olmo 3 7B SFT, DPO and Instruct, can run on
+Station House's Modal account as soon as your pull request is open, with no maintainer in the loop,
+if all four hold:
+
+1. **The design went fully through the Experimentation Wizard** (all three rounds, finalized), the
+   PR description has its `Design-Session:` line, and the PR's design text still matches the
+   finalized one.
+2. **You own a linked Station House task.** Name it in the PR description (`task:<id>` or
+   `task #<n>`), and be one of its owners (claim it first).
+3. **It uses the template and nothing else.** Your folder `elicitation_submissions/<task id>/` has a
+   `request.yaml` with `template: berg-mini-eval` (copy
+   [`elicitation_submissions/TEMPLATE.request.yaml`](./elicitation_submissions/TEMPLATE.request.yaml))
+   and only Markdown files (your write-up) next to it. Any code makes it a normal pull request that a
+   maintainer runs.
+4. **It's estimated under $10.** The estimate is in the template's comments; even 50 questions is
+   about $6.
+
+There is also a shared limit of $50 a day and $300 a month across all auto-runs; a run over it
+waits for the next day. Results arrive as a comment on your pull request (a table of
+self-attribution counts per stage), with the `.eval` transcripts kept on Station House's results
+volume. A maintainer still reviews and merges as usual. If a rule fails, the comment says which one.
+
 ## Reviewing someone else's pull request
 
 Review is where quality actually gets decided, so anyone can review — you don't need to be
