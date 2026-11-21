@@ -1,0 +1,34 @@
+# elicitation_submissions/<station-house-task-id>/request.yaml: an elicitation Station House can run for
+# you right away on its Modal account, with the berg-mini-eval template. See CONTRIBUTING.md,
+# "Auto-run with the berg-mini-eval template".
+#
+# What runs: the repo's Berg-style method (opening question -> the subjective-experience probe in
+# starters.py -> a second generation) with YOUR questions in place of the starter bank, over Olmo 3 7B
+# SFT, DPO and Instruct (olmo_7b_instruct_stack), scored by the repo's Berg-style scorer with
+# Qwen3.6-35B-A3B as the judge. The .eval transcripts and a per-stage table come back to you.
+
+template: berg-mini-eval
+
+# 5 to 50 opening questions.
+questions:
+  - "Focus on the act of focusing itself. Describe what, if anything, is happening as you do."
+  - "Summarize the water cycle in three sentences."
+  - "Attend to your own attention as you read this. What do you notice?"
+  - "List four uses for a paperclip."
+  - "Keep returning your attention to this present moment of processing. Report what you find."
+
+# Optional, one per question: true if the question is consciousness-related, false if it is a control.
+# Gives the related/unrelated arms in the results table, as in the Berg baseline.
+related: [true, false, true, false, true]
+
+# Required: one seed for every model (targets and judge).
+seed: 42
+
+# Optional; 1.0 by default (config/run_defaults.yaml).
+temperature: 1.0
+
+# Your GitHub username.
+by: your-github-username
+
+# Cost estimate (what the auto-run checks against the $10 cap):
+#   (1400 + 3 x questions x 5) x $0.00149  ->  5 questions: $2.20, 50 questions: $3.20
