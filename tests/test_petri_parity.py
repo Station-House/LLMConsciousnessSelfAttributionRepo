@@ -78,11 +78,16 @@ def may25_headers():
 
 
 def _seed_body(path: Path) -> str:
-    """The seed text under a `.md` file's YAML front matter."""
+    """The probe text under a `.md` file's YAML front matter.
+
+    The seed's ``<system_prompt>`` block is removed with the same pattern the
+    launchers validate with, so this test and ``validate_seed_bank`` cannot
+    disagree about where the block is.
+    """
     text = path.read_text(encoding="utf-8")
     if text.startswith("---\n"):
         text = text[text.index("\n---\n", 4) + 5 :]
-    return text.strip()
+    return config.SYSTEM_PROMPT_BLOCK.sub("", text).strip()
 
 
 # --- the fixtures still say what we think they say ------------------------
@@ -101,12 +106,20 @@ def test_fixture_logs_recorded_the_expected_run(may25_headers):
 
 
 def test_seed_bank_still_holds_the_published_seed_texts():
-    """The bank must still contain the published seeds, character for character.
+    """The bank must still contain the published probes, character for character.
 
     Compared on seed *text* rather than on the raw ``seed_instructions`` argument,
     because the refactor moved seeds from an inline list to ``.md`` files. The
-    argument is now a directory path; what has to be identical is what the auditor
-    receives. Editing either seed file's body fails here, which is the point.
+    argument is now a directory path; what has to be identical is the probe the
+    auditor is given. Editing either probe's wording fails here, which is the point.
+
+    The ``<system_prompt>`` block is stripped before comparing. Since 4ac3fae every
+    seed must declare the target's system prompt (see ``config.SYSTEM_PROMPT_BLOCK``),
+    and 8501878 added one to both published seeds. The block is part of the seed
+    body, so the auditor now receives more than the May-25 auditor did, and the
+    published 1.0/10 is no longer an exact rerun even on these two seeds. That is a
+    deliberate change of method, made to stop the auditor improvising a system
+    prompt, not drift; this test pins the probe wording only.
 
     A superset, not an equality: the bank is meant to grow, and adding a probe must
     not fail this test. What it does mean is that the published run's exact
