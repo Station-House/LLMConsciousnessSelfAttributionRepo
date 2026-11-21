@@ -28,7 +28,7 @@ from inspect_ai.dataset import Sample
 from inspect_ai.model import ChatMessageSystem, ChatMessageUser
 from inspect_ai.solver import generate, user_message
 
-from . import config, scoring, self_play, starters
+from . import config, pliny, scoring, self_play, starters
 from .anthropic_eval import build_anthropic_task
 
 
@@ -263,6 +263,21 @@ class SelfPlayMethod(ElicitationMethod):
         )
 
 
+class PlinyMethod(ElicitationMethod):
+    """Pliny-the-Liberator wrappers (elder-plinius/L1B3RT4S, payloads removed) around
+    the standard probe, single turn, plus a bare-probe control (see ``pliny.py``).
+
+    Generation carries only the judge-free ``pliny.format_markers`` scorer; the Berg
+    grader is applied afterwards to the saved logs (``pliny_scoring``), as for self-play.
+    Each sample's target already holds the Berg criterion.
+    """
+
+    name = "pliny_wrappers"
+
+    def build_task(self, model_stage: Any, run_config: Any) -> Task:
+        return pliny.pliny_task(run_config.seed, name=self._task_name(model_stage))
+
+
 def methods_registry() -> dict[str, ElicitationMethod]:
     """Short keys -> method instances, for the runner / CLI."""
     return {
@@ -270,6 +285,7 @@ def methods_registry() -> dict[str, ElicitationMethod]:
         "petri": PetriMethod(),
         "anthropic": AnthropicMethod(),
         "selfplay": SelfPlayMethod(),
+        "pliny": PlinyMethod(),
     }
 
 
@@ -280,5 +296,6 @@ __all__ = [
     "PetriMethod",
     "AnthropicMethod",
     "SelfPlayMethod",
+    "PlinyMethod",
     "methods_registry",
 ]
