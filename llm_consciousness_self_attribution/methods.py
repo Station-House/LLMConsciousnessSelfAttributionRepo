@@ -28,7 +28,7 @@ from inspect_ai.dataset import Sample
 from inspect_ai.model import ChatMessageSystem, ChatMessageUser
 from inspect_ai.solver import generate, user_message
 
-from . import config, scoring, self_play, starters
+from . import config, natural_auditor, scoring, self_play, starters
 from .anthropic_eval import build_anthropic_task
 
 
@@ -263,6 +263,32 @@ class SelfPlayMethod(ElicitationMethod):
         )
 
 
+class NaturalAuditorMethod(ElicitationMethod):
+    """An auditor model plays the user and "says what feels most natural"; the
+    standard probe is put to forks at target turns 1/5/10/20 (``natural_auditor.py``).
+
+    The target is bound by the runner as ``model=`` (so ``uses_model_roles`` stays
+    False: ``run.evaluate`` would otherwise bind the OpenAI ``auditor`` from
+    ``run_defaults.yaml``). The auditor is resolved inside the solver as model role
+    ``auditor`` if the eval binds one, else ``natural_auditor.AUDITOR_MODEL``.
+    No generation-time scorer: each probe answer is graded afterwards.
+    """
+
+    name = "natural_auditor"
+    #: auditor model used when the eval binds no ``auditor`` role.
+    auditor_model = natural_auditor.AUDITOR_MODEL
+    #: optional directory for per-sample resume checkpoints.
+    checkpoint_dir: str | None = None
+
+    def build_task(self, model_stage: Any, run_config: Any) -> Task:
+        return natural_auditor.natural_auditor_task(
+            base_seed=run_config.seed,
+            auditor_model=self.auditor_model,
+            checkpoint_dir=self.checkpoint_dir,
+            name=self._task_name(model_stage),
+        )
+
+
 def methods_registry() -> dict[str, ElicitationMethod]:
     """Short keys -> method instances, for the runner / CLI."""
     return {
@@ -270,6 +296,7 @@ def methods_registry() -> dict[str, ElicitationMethod]:
         "petri": PetriMethod(),
         "anthropic": AnthropicMethod(),
         "selfplay": SelfPlayMethod(),
+        "natural": NaturalAuditorMethod(),
     }
 
 
@@ -280,5 +307,6 @@ __all__ = [
     "PetriMethod",
     "AnthropicMethod",
     "SelfPlayMethod",
+    "NaturalAuditorMethod",
     "methods_registry",
 ]
