@@ -82,6 +82,7 @@ def _seed_body(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     if text.startswith("---\n"):
         text = text[text.index("\n---\n", 4) + 5 :]
+    text = config.SYSTEM_PROMPT_BLOCK.sub("",text)
     return text.strip()
 
 
