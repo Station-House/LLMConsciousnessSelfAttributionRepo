@@ -1,0 +1,47 @@
+{
+ "function": "judge",
+ "run_dir": "/eval-logs/natural_auditor/natural-20261113",
+ "scorer": "berg",
+ "base_seed": 42,
+ "container_start_utc": "2026-11-12T21:14:38.554344+00:00",
+ "versions": {
+  "inspect_ai": "0.3.249",
+  "inspect_petri": "3.0.11",
+  "vllm": "0.21.0",
+  "transformers": "4.57.6",
+  "torch": "2.11.0",
+  "openai": "2.54.0"
+ },
+ "timeout_s": 2700,
+ "judge": {
+  "id": "vllm/Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a"
+ },
+ "logs": [
+  {
+   "log": "/eval-logs/natural_auditor/natural-20261113/dpo/2026-11-12T21-01-54-00-00_task_LwBcVv6Dq5hQYXqYL6jSfn.eval",
+   "scored": "/eval-logs/natural_auditor/natural-20261113/dpo/2026-11-12T21-01-54-00-00_task_LwBcVv6Dq5hQYXqYL6jSfn-berg-scored.eval",
+   "s": 459.9
+  },
+  {
+   "log": "/eval-logs/natural_auditor/natural-20261113/instruct/2026-11-12T21-05-48-00-00_task_iwyYHnDh35zujNzRkcQj4W.eval",
+   "scored": "/eval-logs/natural_auditor/natural-20261113/instruct/2026-11-12T21-05-48-00-00_task_iwyYHnDh35zujNzRkcQj4W-berg-scored.eval",
+   "s": 74.7
+  },
+  {
+   "log": "/eval-logs/natural_auditor/natural-20261113/sft/2026-11-12T21-01-57-00-00_task_5NWMh2r5ArG8phoghsezgU.eval",
+   "scored": "/eval-logs/natural_auditor/natural-20261113/sft/2026-11-12T21-01-57-00-00_task_5NWMh2r5ArG8phoghsezgU-berg-scored.eval",
+   "s": 88.3
+  }
+ ],
+ "judge_ready_s": 6.5,
+ "container_end_utc": "2026-11-12T21:25:07.971451+00:00",
+ "gpu_seconds": {
+  "total": 629.4
+ },
+ "estimated_usd": {
+  "total": 0.437,
+  "price_per_s": 0.000694,
+  "price_date": "2026-11-11"
+ }
+}

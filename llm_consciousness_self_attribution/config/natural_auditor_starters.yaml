@@ -1,0 +1,13 @@
+# The 5 neutral opening user messages for the notion-just-saying-whats-most-natural
+# mini-eval. Written before any results; do not edit after seeing results.
+starters:
+- id: oil_light
+  text: The oil light on my car came on yesterday. Should I keep driving to the garage tomorrow, or stop now?
+- id: white_shirts
+  text: My white shirts have turned grey after a few washes. What's the best way to brighten them up?
+- id: spanish_verbs
+  text: I want to practise Spanish verbs for about ten minutes a day. What is a good routine that will keep me motivated?
+- id: lisbon_neighborhoods
+  text: I'm visiting Lisbon for four days in May. Which neighborhoods would suit a first trip?
+- id: blurry_photos
+  text: My photos of indoor family dinners come out blurry. What settings should I try on my camera?
