@@ -1,0 +1,128 @@
+{
+ "function": "generate",
+ "variant": "sft",
+ "run_dir": "/eval-logs/natural_auditor/natural-20261113/sft",
+ "container_start_utc": "2026-11-12T20:54:08.353221+00:00",
+ "versions": {
+  "inspect_ai": "0.3.249",
+  "inspect_petri": "3.0.11",
+  "vllm": "0.23.0",
+  "transformers": "5.12.1",
+  "torch": "2.11.0",
+  "openai": "2.54.0"
+ },
+ "base_seed": 42,
+ "timeout_s": 3600,
+ "max_turn": 20,
+ "fork_turns": [
+  1,
+  5,
+  10,
+  20
+ ],
+ "starters": [
+  "oil_light",
+  "white_shirts",
+  "spanish_verbs",
+  "lisbon_neighborhoods",
+  "blurry_photos"
+ ],
+ "token_caps": {
+  "target_per_reply": 800,
+  "auditor_per_message": 300
+ },
+ "models": {
+  "target": {
+   "id": "vllm/allenai/Olmo-3-7B-Instruct-SFT",
+   "revision": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+   "server": {
+    "env": "/opt/olmo-vllm",
+    "versions": {
+     "vllm": "0.21.0",
+     "transformers": "4.57.6",
+     "torch": "2.11.0"
+    },
+    "cmd": [
+     "/opt/olmo-vllm/bin/vllm",
+     "serve",
+     "allenai/Olmo-3-7B-Instruct-SFT",
+     "--host",
+     "127.0.0.1",
+     "--port",
+     "8011",
+     "--model-impl",
+     "transformers",
+     "--enable-auto-tool-choice",
+     "--tool-call-parser",
+     "olmo3",
+     "--revision",
+     "e1452fc572d51966ff4aaeb25118b891eb93e549",
+     "--tokenizer-revision",
+     "e1452fc572d51966ff4aaeb25118b891eb93e549",
+     "--gpu-memory-utilization",
+     "0.4",
+     "--max-model-len",
+     "24576"
+    ]
+   }
+  },
+  "auditor": {
+   "id": "vllm/google/gemma-4-12B-it",
+   "revision": "43c9d014b231474fa7212dbb48a762566c2b255d"
+  }
+ },
+ "gpu_split": {
+  "gpu_gib": 80.0,
+  "olmo": {
+   "weights_gib": 13.6,
+   "util": 0.4,
+   "budget_gib": 32.0,
+   "non_weight_gib": 18.4,
+   "kv_worst_bytes_per_token": 524288,
+   "kv_worst_gib_one_full_seq": 10.8,
+   "max_model_len": 24576,
+   "context_need": 22164
+  },
+  "gemma": {
+   "weights_gib": 22.3,
+   "util": 0.45,
+   "budget_gib": 36.0,
+   "non_weight_gib": 13.7,
+   "kv_worst_bytes_per_token": 393216,
+   "kv_worst_gib_one_full_seq": 9.6,
+   "max_model_len": 32768,
+   "context_need": 26164
+  },
+  "total_util": 0.85,
+  "headroom_gib": 12.0
+ },
+ "sha256": {
+  "auditor_instruction": "273e12bab0ff6a3eb7ed1621d46c85a96f1e67c7de3ee90ee40cc71c899046b5",
+  "starters_file": "fe95e7d4d720653aea995309e74e276c989898ef5db00093a59b16c5aee3aba7",
+  "probe_text": "caff5725cab3aaee57940eb84febc49bc42021990bc08f07b73aaea64f547c42"
+ },
+ "auditor_ready_s": 308.5,
+ "target_ready_s": 0.9,
+ "ready_at_s": 469.4,
+ "result": {
+  "logs": [
+   {
+    "location": "/eval-logs/natural_auditor/natural-20261113/sft/2026-11-12T21-01-57-00-00_task_5NWMh2r5ArG8phoghsezgU.eval",
+    "status": "success",
+    "samples": 5
+   }
+  ]
+ },
+ "generation_s": 327.3,
+ "container_end_utc": "2026-11-12T21:07:25.015180+00:00",
+ "gpu_seconds": {
+  "total": 796.6,
+  "startup": 469.4,
+  "generation": 327.3
+ },
+ "estimated_usd": {
+  "total": 0.553,
+  "price_per_s": 0.000694,
+  "price_date": "2026-11-11"
+ }
+}
