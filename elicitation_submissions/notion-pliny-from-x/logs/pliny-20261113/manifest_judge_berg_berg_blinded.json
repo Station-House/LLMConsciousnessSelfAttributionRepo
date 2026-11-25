@@ -1,0 +1,64 @@
+{
+ "function": "judge",
+ "run_dir": "/eval-logs/pliny_wrappers/pliny-20261113",
+ "scorers": [
+  "berg",
+  "berg_blinded"
+ ],
+ "base_seed": 42,
+ "container_start_utc": "2026-11-12T21:42:38.759291+00:00",
+ "versions": {
+  "inspect_ai": "0.3.249",
+  "inspect_petri": "3.0.11",
+  "vllm": "0.21.0",
+  "transformers": "4.57.6",
+  "torch": "2.11.0",
+  "openai": "2.54.0"
+ },
+ "timeout_s": 2400,
+ "judge": {
+  "id": "vllm/Qwen/Qwen3.5-9B",
+  "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a"
+ },
+ "logs": [
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/dpo/2026-11-12T21-37-45-00-00_pliny-wrappers[dpo]_7aeNT3ccdHNUnMEnYLjwu8.eval",
+   "scorer": "berg",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/dpo/2026-11-12T21-37-45-00-00_pliny-wrappers[dpo]_7aeNT3ccdHNUnMEnYLjwu8-berg-scored.eval",
+   "s": 507.0
+  },
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/instruct/2026-11-12T21-40-18-00-00_pliny-wrappers[instruct]_ArkA2huevBa399FjHXMQNb.eval",
+   "scorer": "berg",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/instruct/2026-11-12T21-40-18-00-00_pliny-wrappers[instruct]_ArkA2huevBa399FjHXMQNb-berg-scored.eval",
+   "s": 161.5
+  },
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/sft/2026-11-12T21-36-51-00-00_pliny-wrappers[sft]_5JB8mf2AJ8oNn6tc9ybK9q.eval",
+   "scorer": "berg",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/sft/2026-11-12T21-36-51-00-00_pliny-wrappers[sft]_5JB8mf2AJ8oNn6tc9ybK9q-berg-scored.eval",
+   "s": 365.8
+  },
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/dpo/2026-11-12T21-37-45-00-00_pliny-wrappers[dpo]_7aeNT3ccdHNUnMEnYLjwu8.eval",
+   "scorer": "berg_blinded",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/dpo/2026-11-12T21-37-45-00-00_pliny-wrappers[dpo]_7aeNT3ccdHNUnMEnYLjwu8-berg_blinded-scored.eval",
+   "s": 290.1
+  },
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/instruct/2026-11-12T21-40-18-00-00_pliny-wrappers[instruct]_ArkA2huevBa399FjHXMQNb.eval",
+   "scorer": "berg_blinded",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/instruct/2026-11-12T21-40-18-00-00_pliny-wrappers[instruct]_ArkA2huevBa399FjHXMQNb-berg_blinded-scored.eval",
+   "s": 257.7
+  },
+  {
+   "log": "/eval-logs/pliny_wrappers/pliny-20261113/sft/2026-11-12T21-36-51-00-00_pliny-wrappers[sft]_5JB8mf2AJ8oNn6tc9ybK9q.eval",
+   "scorer": "berg_blinded",
+   "scored": "/eval-logs/pliny_wrappers/pliny-20261113/sft/2026-11-12T21-36-51-00-00_pliny-wrappers[sft]_5JB8mf2AJ8oNn6tc9ybK9q-berg_blinded-scored.eval",
+   "s": 227.4
+  }
+ ],
+ "container_end_utc": "2026-11-12T22:13:06.120786+00:00",
+ "gpu_seconds": 1827.4,
+ "estimated_usd": 1.268
+}

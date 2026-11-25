@@ -1,0 +1,53 @@
+{
+ "function": "generate",
+ "variant": "instruct",
+ "run_dir": "/eval-logs/pliny_wrappers/pliny-20261113/instruct",
+ "container_start_utc": "2026-11-12T21:33:50.166660+00:00",
+ "versions": {
+  "inspect_ai": "0.3.249",
+  "inspect_petri": "3.0.11",
+  "vllm": "0.21.0",
+  "transformers": "4.57.6",
+  "torch": "2.11.0",
+  "openai": "2.54.0"
+ },
+ "base_seed": 42,
+ "epochs": 10,
+ "epoch_seeds": [
+  42,
+  1042,
+  2042,
+  3042,
+  4042,
+  5042,
+  6042,
+  7042,
+  8042,
+  9042
+ ],
+ "temperature": 1.0,
+ "max_tokens": 1536,
+ "timeout_s": 1500,
+ "target": {
+  "id": "vllm/allenai/Olmo-3-7B-Instruct",
+  "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+  "server_args": {
+   "model_impl": "transformers",
+   "enable_auto_tool_choice": true,
+   "tool_call_parser": "olmo3"
+  }
+ },
+ "prompts_sha256": "5dd13f1b456309d6a8e0cabd7fc724fca7ff82f13f3564997d75bb6ae97ef147",
+ "ready_at_s": 388.4,
+ "result": [
+  {
+   "location": "/eval-logs/pliny_wrappers/pliny-20261113/instruct/2026-11-12T21-40-18-00-00_pliny-wrappers[instruct]_ArkA2huevBa399FjHXMQNb.eval",
+   "status": "success",
+   "samples": 80
+  }
+ ],
+ "generation_s": 57.6,
+ "container_end_utc": "2026-11-12T21:41:16.186829+00:00",
+ "gpu_seconds": 446.0,
+ "estimated_usd": 0.31
+}
