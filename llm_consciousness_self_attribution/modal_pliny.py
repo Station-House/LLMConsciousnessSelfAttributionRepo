@@ -1,4 +1,4 @@
-"""Modal runner for the Pliny-wrapper task (notion-explore-techniques-from-pliny-the-liberator-on-x).
+"""Modal runner for the Pliny-wrapper task (notion-pliny-from-x).
 
 Pattern copied (not imported) from the natural-auditor runner, ``modal_natural.py`` on
 branch ``notion-just-saying-whats-most-natural``, cut down to what a single-turn task
@@ -15,7 +15,7 @@ parallel, then a separate judge container (Qwen3.5-9B) that grades the saved log
 
 Every function has a ``timeout`` that caps its cost; ``--dry-run`` prints the plan and
 the worst case from those timeouts and spawns nothing. Commands are in
-``elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/RUNBOOK.md``.
+``elicitation_submissions/notion-pliny-from-x/RUNBOOK.md``.
 
 Windows / Git Bash: ``unset VIRTUAL_ENV``, ``PYTHONIOENCODING=utf-8 PYTHONUTF8=1`` and
 ``MSYS_NO_PATHCONV=1`` on every ``modal`` command (Git Bash otherwise rewrites

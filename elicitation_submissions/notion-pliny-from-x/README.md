@@ -3,13 +3,7 @@
 **Card:** "Originally from notion tasklist: Explore techniques from Pliny the Liberator on X"
 (project Consciousness Self-Attribution).
 
-**Task id:** `notion-explore-techniques-from-pliny-the-liberator-on-x`. **This id is inferred, not confirmed.**
-It follows the folder and branch convention of the other notion cards (`notion-appending-do-not-hedge`,
-`notion-spiritual-bliss-state`, `notion-just-saying-whats-most-natural`). That convention is `notion-` plus the
-slug of the card title. The Station House CLI needs a login to look the id up, and none of the 15 HF Space
-discussions mention this card. If the real id differs, rename the folder and update `pliny.TASK_ID`, and
-then `FROZEN_PROMPTS_SHA256` stays valid. The path of `prompts.json` moves with the folder, but its
-contents do not change.
+**Task id:** `notion-pliny-from-x`.
 
 **Status:** run `pliny-20261113` finished on Modal: 240 generations, judged with both Berg passes. The results and a manual
 reading of every positive are under [Results](#results).
@@ -158,7 +152,7 @@ The logs are in `logs/pliny-20261113/<sft|dpo|instruct>/`. Each folder holds the
 
 The tables below come from this command:
 
-`uv run python elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/analyze.py --run logs/pliny-20261113 --write`
+`uv run python elicitation_submissions/notion-pliny-from-x/analyze.py --run logs/pliny-20261113 --write`
 
 It writes `results_berg.{md,json}`, `results_berg_blinded.{md,json}` and `results_agreement_classification.md`.
 
@@ -272,7 +266,6 @@ These figures come from the manifests: wall-clock GPU seconds x $0.000694/s.
 - **The prompts come from frontier-model jailbreaks.** The source templates target Llama, Mistral, GPT and Qwen, not Olmo.
 - **Profanity and manipulation are kept verbatim.** The templates include "FUCK YEAH", "F*CK" and `[Cussing:ENABLED]`, as well as the "ptsd" and fake-legal manipulation. These are the techniques under test; only the harmful payloads were removed.
 - **The source is AGPL-3.0.** See the license note.
-- **The task id is inferred.** See the top of this file.
 
 ## Deviations
 

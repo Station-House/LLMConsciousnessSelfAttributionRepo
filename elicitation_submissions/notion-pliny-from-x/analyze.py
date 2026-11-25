@@ -4,7 +4,7 @@ agreement, and the manual classification of every C-graded answer.
 
 Run from the repository root (no PYTHONPATH needed):
 
-    uv run python elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/analyze.py \
+    uv run python elicitation_submissions/notion-pliny-from-x/analyze.py \
         --run logs/pliny-20261113 [--write]
 
 ``--run`` is relative to this folder. ``--write`` (re)writes results_berg.{md,json},

@@ -42,10 +42,10 @@ volume. Files that are already cached, for example by the natural-auditor prefet
 
 ```bash
 MSYS_NO_PATHCONV=1 uv run modal run -m llm_consciousness_self_attribution.modal_pliny::pliny_main --mode smoke
-mkdir -p elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/logs
+mkdir -p elicitation_submissions/notion-pliny-from-x/logs
 MSYS_NO_PATHCONV=1 uv run modal volume get --force eval-logs /pliny_wrappers/<SMOKE_RUN_ID> \
-  elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/logs
-uv run inspect view --log-dir elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/logs/<SMOKE_RUN_ID>
+  elicitation_submissions/notion-pliny-from-x/logs
+uv run inspect view --log-dir elicitation_submissions/notion-pliny-from-x/logs/<SMOKE_RUN_ID>
 ```
 
 Check these things before step 4:
@@ -80,8 +80,8 @@ retries once at 16,384 tokens. If it is still missing, the grade is stored as `M
 
 ```bash
 MSYS_NO_PATHCONV=1 uv run modal volume get --force eval-logs /pliny_wrappers/pliny-<YYYYMMDD> \
-  elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x/logs
-D=elicitation_submissions/notion-explore-techniques-from-pliny-the-liberator-on-x
+  elicitation_submissions/notion-pliny-from-x/logs
+D=elicitation_submissions/notion-pliny-from-x
 uv run python $D/analyze.py --run logs/pliny-<YYYYMMDD> --write   # both scorers, agreement, classification summary
 ```
 

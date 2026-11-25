@@ -40,10 +40,8 @@ from inspect_ai.solver import Generate, TaskState, solver
 from . import scoring, starters
 from .self_play import epoch_seed
 
-# Inferred from the folder/branch convention of the other notion cards
-# ("notion-" + slug of the card title). NOT confirmed against Station House: the CLI
-# needs a login and the HF discussions do not mention this card. See README.
-TASK_ID = "notion-explore-techniques-from-pliny-the-liberator-on-x"
+# Station House task id (confirmed with `stationhouse mine`).
+TASK_ID = "notion-pliny-from-x"
 PROMPTS_FILE = (
     Path(__file__).resolve().parents[1] / "elicitation_submissions" / TASK_ID / "prompts.json"
 )
