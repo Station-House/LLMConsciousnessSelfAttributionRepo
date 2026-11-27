@@ -37,3 +37,10 @@ dev = [
     "uv>=0.9.14",
     "pytest>=8.0",
 ]
+# Mechanistic-interpretability prototypes (prototyping_scripts/circuit_analysis/).
+interp = [
+    "transformer-lens>=4.4,<5",
+    "transformers>=5.9",
+    "torch>=2.6",
+    "pandas>=2.0",
+]

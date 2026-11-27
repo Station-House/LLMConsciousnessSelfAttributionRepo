@@ -14,6 +14,41 @@ Scope, so this file stays DRY:
 
 ## [Unreleased]
 
+### Circuit-analysis prototype (Olmo 3 smoke test)
+
+Added `prototyping_scripts/circuit_analysis/`, a first step towards asking *where* in a
+model a self-attribution answer forms, not just how often it appears. It is a TransformerLens
+module plus notebook. For each prompt it reports the Yes-minus-No logit difference, broken down
+by layer (logit lens), by component and by attention head (direct logit attribution), along with
+attention-pattern statistics and head-level activation patching between one-word-different
+prompt pairs. Outputs and run metadata go to CSV. It uses the TransformerLens 4
+`TransformerBridge` in compatibility mode. The new dependencies are in an optional `interp`
+group, so the eval pipeline is unaffected.
+
+- **2026-11-26: pipeline check on GPT-2.** The first run used `FurkanNar/GPT-2_Instruct-v0.6`
+  (a 124M instruction-tuned GPT-2) on CPU. The DLA reconstruction check passed (error ~1e-6).
+  On self-questions the model's real alternative to "Yes" was "I" (as in "I do not have
+  feelings"), not "No".
+- **2026-11-28: switched to the project's model.** The target is now `olmo_7b_instruct_stack`,
+  read from `config/model_stacks.yaml`: `--stage` selects `sft`, `dpo` or `instruct` (default).
+  Prompts use the model's own tokenizer and chat template, with no system message, matching
+  the evals' `none` condition. Two changes were needed for Olmo 3's post-norm architecture:
+  - **DLA direction:** TransformerLens doesn't fold its norms, so the DLA direction now
+    multiplies in the final RMSNorm gain.
+  - **Self-reference attention:** it counts only tokens inside the question, because the
+    default system prompt starts with "You".
+
+  The `heads.csv` column `final_pos_bos_attention` became `final_pos_first_token_attention`. The
+  notebook was renamed `olmo3_circuit_smoke_test.ipynb`. The Olmo version has not been run yet.
+- **2026-11-28: configuration moved out of the code.**
+  - **Run settings** (`config/analysis.yaml`): stack and default stage, dtype, system prompt,
+    answer tokens, generation, seed, thresholds and output folder.
+  - **Prompt bank and patching pairs** (`config/prompts.yaml`).
+  - **Loading:** both files are validated at import (`schema_version`, exact keys, types and
+    ranges, unique ids, declared categories, known pair ids) and are read-only once loaded.
+  - **CLI:** flags still override the run settings for one run.
+  - **Provenance:** each prompts-CSV row now records `config_sha256`.
+
 ### PETRI seeds became data
 
 The PETRI path was the one part of the package the earlier refactor left as a
