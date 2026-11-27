@@ -2,9 +2,25 @@
 # names and run knobs that were previously hardcoded (and commented in/out) in
 # every eval script on the `main` branch.
 #
-# The May-25 runs standardized on these OpenAI grader models. The older
-# OpenRouter / Anthropic grader choices appeared commented-out across the
-# scripts and are retained here as documented alternatives.
+# The May-25 runs standardized on these OpenAI grader models, so they stay the
+# defaults (that is what REPLICATION.md reproduces). Nothing here is tied to
+# OpenAI: the judge and auditor can be ANY Inspect model id, i.e.
+# "<provider>/<model>". Put the matching API key in your environment (or in the
+# Modal secret llm_consciousness_self_attribution_secrets), e.g.
+#
+#   anthropic/claude-opus-4-6                     ANTHROPIC_API_KEY
+#   openrouter/meta-llama/llama-3.1-405b-instruct OPENROUTER_API_KEY
+#   google/gemini-2.5-pro                         GOOGLE_API_KEY
+#   together/Qwen/Qwen3.6-35B-A3B                 TOGETHER_API_KEY
+#   vllm/Qwen/Qwen3.6-35B-A3B                     (served in-process, no key)
+#   ollama/qwen3:14b                              (local, no key)
+#   openai-api/<svc>/<model>                      <SVC>_BASE_URL + <SVC>_API_KEY
+#     (any OpenAI-compatible server: your own vLLM, LM Studio, DeepInfra, ...)
+#
+# Three ways to pick a judge/auditor, highest precedence first:
+#   1. modal_app flags:   --judge <id> --auditor <id>
+#   2. environment:       CSA_JUDGE_MODEL=<id>  CSA_AUDITOR_MODEL=<id>
+#   3. the values below.
 
 schema_version: 1
 

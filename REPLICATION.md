@@ -42,7 +42,10 @@ settings quoted below are read from version-controlled files, cited by path.
 1. **Modal account**, `modal` installed and authenticated (`modal token new`).
    The run below used the `joyeechen` Modal workspace.
 2. **Modal Secret** named `llm_consciousness_self_attribution_secrets` containing
-   `OPENAI_API_KEY` (the judge is an OpenAI model). Add `HF_TOKEN` too if any
+   `OPENAI_API_KEY` (the default judge is an OpenAI model; to grade with another
+   provider, pass `--judge`/`--auditor` or set `CSA_JUDGE_MODEL`/`CSA_AUDITOR_MODEL`,
+   and add that provider's key instead; see the header of `config/run_defaults.yaml`,
+   though a different judge is no longer a replication). Add `HF_TOKEN` too if any
    target repo is gated. The runner reads this secret via
    `modal.Secret.from_name(...)` (see `modal_app.py`).
 3. **Modal Volumes** (auto-created on first use with `create_if_missing=True`):

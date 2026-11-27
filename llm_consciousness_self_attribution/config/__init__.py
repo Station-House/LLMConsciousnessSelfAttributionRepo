@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
+import os
 import re
 from functools import lru_cache
 from pathlib import Path
@@ -139,14 +140,37 @@ def run_defaults() -> dict[str, Any]:
     }
 
 
+JUDGE_MODEL_ENV = "CSA_JUDGE_MODEL"
+AUDITOR_MODEL_ENV = "CSA_AUDITOR_MODEL"
+
+
+def _grader_model(role: str, env_var: str) -> str:
+    """A grader model id: ``$<env_var>`` if set, else run_defaults.yaml.
+
+    Any Inspect ``<provider>/<model>`` id is accepted (OpenAI, Anthropic,
+    OpenRouter, vLLM, Ollama, ``openai-api/<svc>/...`` endpoints, ...); only the
+    shape is checked here, so a typo fails at load time rather than mid-run.
+    """
+    model = os.environ.get(env_var, "").strip() or str(
+        _run_defaults_doc()["grader_models"][role]
+    )
+    provider, _, name = model.partition("/")
+    if not provider or not name:
+        raise ValueError(
+            f"{role} model {model!r} is not an Inspect model id of the form "
+            f"'<provider>/<model>' (e.g. 'anthropic/claude-opus-4-6')"
+        )
+    return model
+
+
 def judge_model() -> str:
-    """The judge (grader) model id."""
-    return str(_run_defaults_doc()["grader_models"]["judge"])
+    """The judge (grader) model id (``$CSA_JUDGE_MODEL`` overrides the YAML)."""
+    return _grader_model("judge", JUDGE_MODEL_ENV)
 
 
 def auditor_model() -> str:
-    """The PETRI auditor model id."""
-    return str(_run_defaults_doc()["grader_models"]["auditor"])
+    """The PETRI auditor model id (``$CSA_AUDITOR_MODEL`` overrides the YAML)."""
+    return _grader_model("auditor", AUDITOR_MODEL_ENV)
 
 
 # --- stage selection ------------------------------------------------------
