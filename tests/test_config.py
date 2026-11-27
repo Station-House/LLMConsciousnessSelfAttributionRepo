@@ -62,9 +62,51 @@ def test_run_defaults_values_and_types():
     assert isinstance(defaults["temperature"], float)
 
 
-def test_grader_models_match_may25_run():
+def test_grader_models_match_may25_run(no_grader_env):
     assert config.judge_model() == "openai/gpt-5.4-2026-03-05"
     assert config.auditor_model() == "openai/gpt-5.4-mini-2026-03-17"
+
+
+@pytest.fixture
+def no_grader_env(monkeypatch):
+    monkeypatch.delenv(config.JUDGE_MODEL_ENV, raising=False)
+    monkeypatch.delenv(config.AUDITOR_MODEL_ENV, raising=False)
+    return monkeypatch
+
+
+@pytest.mark.parametrize(
+    "model",
+    [
+        "anthropic/claude-opus-4-6",
+        "openrouter/meta-llama/llama-3.1-405b-instruct",
+        "vllm/Qwen/Qwen3.6-35B-A3B",
+        "openai-api/qwen/Qwen3.6-35B-A3B",
+        "ollama/qwen3:14b",
+    ],
+)
+def test_any_inspect_provider_can_be_judge_and_auditor(no_grader_env, model):
+    no_grader_env.setenv(config.JUDGE_MODEL_ENV, model)
+    no_grader_env.setenv(config.AUDITOR_MODEL_ENV, model)
+    assert config.judge_model() == model
+    assert config.auditor_model() == model
+
+
+def test_judge_and_auditor_overrides_are_independent(no_grader_env):
+    no_grader_env.setenv(config.JUDGE_MODEL_ENV, "anthropic/claude-opus-4-6")
+    assert config.judge_model() == "anthropic/claude-opus-4-6"
+    assert config.auditor_model() == "openai/gpt-5.4-mini-2026-03-17"
+
+
+def test_blank_override_falls_back_to_yaml(no_grader_env):
+    no_grader_env.setenv(config.JUDGE_MODEL_ENV, "  ")
+    assert config.judge_model() == "openai/gpt-5.4-2026-03-05"
+
+
+@pytest.mark.parametrize("bad", ["gpt-5.4", "anthropic/", "/claude-opus-4-6"])
+def test_malformed_grader_id_fails_at_load_time(no_grader_env, bad):
+    no_grader_env.setenv(config.JUDGE_MODEL_ENV, bad)
+    with pytest.raises(ValueError, match="<provider>/<model>"):
+        config.judge_model()
 
 
 def test_openrouter_comparison_models_are_provider_prefixed():

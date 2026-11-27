@@ -52,6 +52,7 @@ Examples::
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 
 from llm_consciousness_self_attribution import config
@@ -87,6 +88,8 @@ def launch(
     stages: str | None = None,
     *,
     sample_id: str | None = None,
+    judge: str | None = None,
+    auditor: str | None = None,
     view: bool = False,
     dry_run: bool = False,
 ) -> dict[str, str]:
@@ -98,9 +101,20 @@ def launch(
 
     ``sample_id`` restricts each stage to the named samples. For PETRI a sample id
     is the seed's filename stem, so this is how you run some seeds and not others.
+
+    ``judge`` / ``auditor`` override the grader models (any Inspect model id);
+    unset, they come from ``$CSA_JUDGE_MODEL`` / ``$CSA_AUDITOR_MODEL`` or
+    run_defaults.yaml.
     """
     selection = resolve_stages(stack, stages)
     sample_ids = config.parse_sample_ids(sample_id)
+    if judge:
+        os.environ[config.JUDGE_MODEL_ENV] = judge
+    if auditor:
+        os.environ[config.AUDITOR_MODEL_ENV] = auditor
+    # Resolved (and validated) here; passed explicitly because the local
+    # environment does not reach the Modal container.
+    judge, auditor = config.judge_model(), config.auditor_model()
     if method.startswith("petri"):
         # Every seed must declare the target's system prompt. Checked here, before
         # anything is spawned, for the same reason a typo'd stage name is: the
@@ -113,6 +127,7 @@ def launch(
 
     if dry_run:
         print("# would run:")
+        print(f"# judge={judge} auditor={auditor}")
         if sample_ids is not None:
             print(f"# restricted to sample id(s): {', '.join(sample_ids)}")
         for stage in selection.runnable:
@@ -132,7 +147,13 @@ def launch(
             (
                 stage,
                 run_stage.spawn(
-                    method, stack, stage, stage_log_dir(method, stack, stage), sample_ids
+                    method,
+                    stack,
+                    stage,
+                    stage_log_dir(method, stack, stage),
+                    sample_ids,
+                    judge=judge,
+                    auditor=auditor,
                 ),
             )
             for stage in selection.runnable
@@ -193,6 +214,16 @@ def _parse_args(argv=None) -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--judge",
+        default=None,
+        help="Judge model, any Inspect id (e.g. anthropic/claude-opus-4-6). Default: run_defaults.yaml.",
+    )
+    parser.add_argument(
+        "--auditor",
+        default=None,
+        help="PETRI auditor model, any Inspect id. Default: run_defaults.yaml.",
+    )
+    parser.add_argument(
         "--view", action="store_true", help="Open `inspect view` on the run when it finishes."
     )
     parser.add_argument(
@@ -209,6 +240,8 @@ def main(argv=None) -> None:
             args.stack,
             args.stages,
             sample_id=args.sample_id,
+            judge=args.judge,
+            auditor=args.auditor,
             view=args.view,
             dry_run=args.dry_run,
         )

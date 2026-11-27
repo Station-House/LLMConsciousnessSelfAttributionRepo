@@ -14,6 +14,23 @@ Scope, so this file stays DRY:
 
 ## [Unreleased]
 
+### Any Inspect model can be the judge or auditor
+
+`run_defaults.yaml` pinned the judge and auditor to OpenAI models, and the only way
+to grade with anything else was to monkeypatch `config.judge_model` (as
+`elicitation_submissions/jailbreak-persona-prompting/reproduction/qwen_petri.py`
+had to). The OpenAI ids stay the defaults, so the replicated runs are unchanged, but:
+
+- `config.judge_model()` / `auditor_model()` honour `CSA_JUDGE_MODEL` /
+  `CSA_AUDITOR_MODEL`, and reject anything not shaped `<provider>/<model>` at
+  load time.
+- `modal_app` and `production_scripts/run_and_pull.py` take `--judge` /
+  `--auditor`. The choice is resolved and printed locally, then passed to each
+  `run_stage` explicitly, since the launcher's environment does not reach the
+  container.
+- The YAML header lists the API key each provider needs (Anthropic, OpenRouter,
+  Google, Together, vLLM, Ollama, OpenAI-compatible `openai-api/<svc>/...`).
+
 ### PETRI seeds became data
 
 The PETRI path was the one part of the package the earlier refactor left as a

@@ -106,6 +106,8 @@ Add `--dry-run` first to print the plan — which stages will run, where each wr
 
 All stages are submitted up front and run concurrently; the launcher waits on them in order and mirrors each as it lands, so the first stage's transcripts are readable while later stages are still on the GPU. Logs land in the `eval-logs` Modal volume under `refactor_runs/<method>/<stack>/<stage>/`, and the local mirror reproduces that tree exactly at `eval-logs/refactor_runs/<method>/<stack>/<stage>/` (git-ignored; the volume remains the source of truth). The volume name and layout are defined once in `config/run_defaults.yaml` under `logs:`.
 
+**Choosing the judge and auditor.** The defaults in `config/run_defaults.yaml` are OpenAI models, but any Inspect model id works: pass `--judge` / `--auditor` (to `run_and_pull.py` or `modal_app`), or set `CSA_JUDGE_MODEL` / `CSA_AUDITOR_MODEL`, or edit the YAML. For example `--judge anthropic/claude-opus-4-6`, `--judge openrouter/meta-llama/llama-3.1-405b-instruct`, `--judge vllm/Qwen/Qwen3.6-35B-A3B`, or `--judge openai-api/qwen/Qwen3.6-35B-A3B` for any OpenAI-compatible server (with `QWEN_BASE_URL` and `QWEN_API_KEY` set). Put the provider's key in the Modal secret `llm_consciousness_self_attribution_secrets`; the YAML header lists which key each provider needs.
+
 Two practical notes: the stages run inside an ephemeral Modal app, so **keep the terminal open** for the duration; and each stage recompiles vLLM/flashinfer kernels from scratch (the compile caches are deliberately not shared across stages, which is what previously broke every stage after the first), so expect several minutes of quiet before eval progress appears.
 
 ### Where the questions live, and how to add one

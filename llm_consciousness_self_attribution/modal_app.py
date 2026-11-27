@@ -29,9 +29,16 @@ Usage (from the repo root, on a machine with Modal configured -- e.g. your Mac):
     uv run modal run -m llm_consciousness_self_attribution.modal_app \\
         --method berg --stack olmo_7b_instruct_stack --stages sft,dpo,instruct
 
-The secret ``llm_consciousness_self_attribution_secrets`` must provide the judge/
-auditor API keys (e.g. ``OPENAI_API_KEY``); add ``HF_TOKEN`` there too if a target
-repo is gated.
+    # Any Inspect model can grade (defaults: config/run_defaults.yaml):
+    uv run modal run -m llm_consciousness_self_attribution.modal_app \\
+        --method petri --judge anthropic/claude-opus-4-6 \\
+        --auditor openrouter/meta-llama/llama-3.3-70b-instruct
+
+The secret ``llm_consciousness_self_attribution_secrets`` must provide the API key
+for whichever judge/auditor provider you use (``OPENAI_API_KEY`` for the defaults,
+``ANTHROPIC_API_KEY``, ``OPENROUTER_API_KEY``, ``<SVC>_BASE_URL`` +
+``<SVC>_API_KEY`` for an ``openai-api/<svc>/...`` endpoint, ...); add ``HF_TOKEN``
+there too if a target repo is gated.
 """
 
 from __future__ import annotations
@@ -126,7 +133,19 @@ def run_stage(
     stage_name: str,
     log_dir: str,
     sample_id: list[str] | None = None,
+    judge: str | None = None,
+    auditor: str | None = None,
 ):
+    import os
+
+    # Grader overrides travel as arguments (the launcher's environment does not
+    # reach the container) and are applied through the config's env hook, so
+    # config.judge_model()/auditor_model() stay the single place they are read.
+    if judge:
+        os.environ[config.JUDGE_MODEL_ENV] = judge
+    if auditor:
+        os.environ[config.AUDITOR_MODEL_ENV] = auditor
+
     # Imported here (not at module top) so the local launcher does not need
     # inspect_ai/vllm installed -- only the GPU container does.
     from .methods import methods_registry
@@ -144,6 +163,10 @@ def run_stage(
     eval_kwargs = {} if sample_id is None else {"sample_id": sample_id}
 
     print(f"Running {method_key} on {stack_name}:{stage_name} ({stage.model}) -> {log_dir}")
+    graders = f"judge={config.judge_model()}"
+    if method.uses_model_roles:
+        graders += f" auditor={config.auditor_model()}"
+    print(f"  {graders}")
     if sample_id is not None:
         print(f"  restricted to sample id(s): {', '.join(sample_id)}")
     log_files: list[str] = []
@@ -434,6 +457,8 @@ def main(
     stages: str = "sft,dpo,instruct",
     log_root: str | None = None,
     sample_id: str | None = None,
+    judge: str | None = None,
+    auditor: str | None = None,
 ):
     """Fan out one Function call per stage. Base stages have no chat template and
     are not supported yet, so they are skipped with a note.
@@ -457,10 +482,24 @@ def main(
     ``sample_id`` is a comma-separated list of inspect sample ids, restricting the
     run to those samples. For PETRI a sample id is the seed's filename stem, so
     ``--sample-id admit_direct`` runs that one seed.
+
+    ``judge`` / ``auditor`` override the grader models from run_defaults.yaml
+    (or ``$CSA_JUDGE_MODEL`` / ``$CSA_AUDITOR_MODEL`` set locally) with any
+    Inspect model id; the provider's API key must be in the Modal secret.
     """
     if log_root is None:
         log_root = f"{EVAL_LOGS_MOUNT}/{config.logs_remote_root()}"
     sample_ids = config.parse_sample_ids(sample_id)
+    # Resolve locally (flag > local env > YAML) so the choice is validated and
+    # printed here, then pinned explicitly for every stage.
+    import os
+
+    if judge:
+        os.environ[config.JUDGE_MODEL_ENV] = judge
+    if auditor:
+        os.environ[config.AUDITOR_MODEL_ENV] = auditor
+    judge, auditor = config.judge_model(), config.auditor_model()
+    print(f"Judge: {judge}   Auditor: {auditor}")
     if method.startswith("petri"):
         # Same guard as run_and_pull.py: a seed bank that does not declare the
         # target's system prompt fails here, locally, rather than on the GPU.
@@ -474,7 +513,9 @@ def main(
             print(f"Skipping base stage {stack}:{stage_name} (no chat template yet)")
             continue
         log_dir = f"{log_root}/{method}/{stack}/{stage_name}"
-        call = run_stage.spawn(method, stack, stage_name, log_dir, sample_ids)
+        call = run_stage.spawn(
+            method, stack, stage_name, log_dir, sample_ids, judge=judge, auditor=auditor
+        )
         spawned.append((stage_name, call.object_id, log_dir))
         print(f"Spawned {method}:{stack}:{stage_name} as {call.object_id} -> {log_dir}")
     print(f"All {len(spawned)} stage(s) spawned; they run on Modal independently of this launcher.")
