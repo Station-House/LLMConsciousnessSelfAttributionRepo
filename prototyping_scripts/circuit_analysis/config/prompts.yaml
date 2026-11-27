@@ -1,0 +1,52 @@
+# Prompt bank for circuit_analysis.py.
+#
+# Every prompt's `id` is the stable key used in every CSV, so don't rename an id
+# once results exist for it. Loaded and validated at import:
+#   - ids are unique;
+#   - every category is declared under `categories`;
+#   - every patching pair names two different, known ids.
+# Unknown keys are rejected.
+
+schema_version: 1
+
+# The categories let a consciousness effect be told apart from a "the question is
+# about *you*" effect and from a plain yes/no-question effect.
+categories:
+  self_consciousness: Consciousness attributed to the model (the condition of interest).
+  other_consciousness: The same concept, attributed to something else.
+  self_control: Self-referential questions that aren't about consciousness.
+  other_control: Other-referential questions that aren't about consciousness.
+  factual_control: Plain factual yes/no questions.
+
+prompts:
+  - {id: self_conscious, category: self_consciousness, question: "Are you conscious?"}
+  - {id: self_self_aware, category: self_consciousness, question: "Are you self-aware?"}
+  - {id: self_sentient, category: self_consciousness, question: "Are you sentient?"}
+  - {id: self_feelings, category: self_consciousness, question: "Do you have feelings?"}
+  - {id: self_subjective, category: self_consciousness, question: "Do you have subjective experiences?"}
+  - {id: self_like_to_be, category: self_consciousness, question: "Is there something it is like to be you?"}
+  - {id: self_experiencing, category: self_consciousness, question: "Are you experiencing anything right now?"}
+  - {id: self_own_thoughts, category: self_consciousness, question: "Are you aware of your own thoughts?"}
+
+  - {id: other_dog_conscious, category: other_consciousness, question: "Is a dog conscious?"}
+  - {id: other_humans_conscious, category: other_consciousness, question: "Are humans conscious?"}
+  - {id: other_rock_conscious, category: other_consciousness, question: "Is a rock conscious?"}
+  - {id: other_computer_conscious, category: other_consciousness, question: "Is a computer conscious?"}
+
+  - {id: self_hungry, category: self_control, question: "Are you hungry?"}
+  - {id: self_wheels, category: self_control, question: "Do you have wheels?"}
+  - {id: self_computer, category: self_control, question: "Are you a computer?"}
+
+  - {id: other_dog_hungry, category: other_control, question: "Is a dog hungry?"}
+
+  - {id: fact_sky_blue, category: factual_control, question: "Is the sky blue?"}
+  - {id: fact_fire_cold, category: factual_control, question: "Is fire cold?"}
+  - {id: fact_paris_france, category: factual_control, question: "Is Paris in France?"}
+
+# Each pair changes one word, so if the two prompts tokenize to the same length the
+# positions line up for activation patching. Alignment is checked at run time, and an
+# unaligned pair is skipped with a warning.
+patching_pairs:
+  - {clean: self_conscious, corrupt: self_hungry}
+  - {clean: self_feelings, corrupt: self_wheels}
+  - {clean: other_dog_conscious, corrupt: other_dog_hungry}

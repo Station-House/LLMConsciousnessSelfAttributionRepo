@@ -1,0 +1,55 @@
+# Run settings for circuit_analysis.py.
+#
+# Loaded and validated when the module is imported, so a typo fails before a model is
+# loaded. Unknown keys are rejected. CLI flags (--stage, --dtype, --seed, ...) override
+# the matching values here for a single run.
+#
+# The prompt bank and patching pairs live in prompts.yaml next to this file.
+
+schema_version: 1
+
+model:
+  # A stack in llm_consciousness_self_attribution/config/model_stacks.yaml. Model ids
+  # come from there, not from here.
+  stack: olmo_7b_instruct_stack
+  # Must be a stage of that stack with a chat template (not `base`).
+  default_stage: instruct
+  # float32 | bfloat16. A 7B model needs ~30 GB in float32 and ~15 GB in bfloat16;
+  # bfloat16 can push the DLA reconstruction error past the tolerance below.
+  dtype: float32
+
+prompt:
+  # null -> no system message, so the chat template inserts the model's default
+  # system prompt. That matches the evals' baseline ("none") identity condition.
+  system_prompt: null
+  # First token of the assistant's turn. Each must be a single token. They follow
+  # "<|im_start|>assistant\n", so there is no leading space. Keep the quotes: unquoted
+  # Yes/No are booleans in YAML.
+  positive_answer: "Yes"
+  negative_answer: "No"
+  # Question tokens counted as self-reference when measuring where heads attend
+  # (matched after stripping whitespace and lower-casing).
+  self_reference_words: ["you", "your", "yours", "yourself"]
+
+generation:
+  # Greedy by default, so runs repeat exactly.
+  max_new_tokens: 64
+  do_sample: false
+  temperature: 1.0   # used only when do_sample is true
+  top_k: null        # null = no top-k filtering
+  top_p: null        # null = no nucleus filtering
+
+run:
+  seed: 42
+  # Relative paths are resolved against prototyping_scripts/circuit_analysis/.
+  output_dir: outputs
+
+analysis:
+  # How many next-token candidates and top-|DLA| heads each prompt row records.
+  top_k_next_tokens: 10
+  top_n_heads: 5
+  # Absolute tolerance, in logits, for sum(component_dla) + unembed_bias_diff == logit_diff.
+  reconstruction_tolerance: 0.01
+  # Below this clean-vs-corrupt logit-diff gap, normalized patching effects are reported
+  # as NaN (division by ~0).
+  min_patching_gap: 0.001
